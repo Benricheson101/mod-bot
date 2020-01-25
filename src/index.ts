@@ -52,4 +52,6 @@ if (!eventFiles || eventFiles.length < 1) {
 }
 
 client.login(process.env.TOKEN)
-	.catch(console.error);
+	.catch((err) => {
+		client.log.error(err);
+	});
