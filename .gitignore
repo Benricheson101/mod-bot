@@ -109,3 +109,4 @@ dist
 # Other things
 build
 .idea
+/src/cmds/test.ts

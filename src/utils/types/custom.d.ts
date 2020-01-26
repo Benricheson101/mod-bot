@@ -53,7 +53,7 @@ declare namespace Command {
 		/**
 		 * The function to run, the actual command code
 		 */
-		run (client, message, args): void;
+		run (client, message, args): Promise<void>;
 	}
 }
 
@@ -76,6 +76,8 @@ declare namespace Database {
 		id: Snowflake;
 		/** The server's prefix */
 		prefix: string;
+		/** Should users be DM'd when they receive an infraction */
+		infNotify: boolean;
 	}
 
 	/**

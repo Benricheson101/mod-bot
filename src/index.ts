@@ -31,7 +31,7 @@ if (!cmdFiles || cmdFiles.length < 1) {
 		if (!cmdFiles[file].endsWith(".js")) break;
 		let cmd: Command.ICommand = require("../build/cmds/" + cmdFiles[file]);
 		client.commands.set(cmd.config.name, cmd);
-		client.log.debug(`Successfully loaded ${cmdFiles[file]}`);
+		client.log.debug("Successfully loaded", cmdFiles[file]);
 	}
 	client.log.info(`Loaded ${client.commands.size} command${client.commands.size === 1 ? "" : "s"}.`);
 }
@@ -39,19 +39,23 @@ if (!cmdFiles || cmdFiles.length < 1) {
 let eventFiles: string[] = readdirSync("build/events");
 client.events = new Collection();
 if (!eventFiles || eventFiles.length < 1) {
-	client.log.warning("No event files found.");
+	client.log.warning("No events found.");
 } else {
+	let loaded = [];
 	for (let file in eventFiles) {
 		if (!eventFiles[file].endsWith(".js")) break;
 		let event: any = require("../build/events/" + eventFiles[file]);
 		let eventName: string = eventFiles[file].split(".")[0];
 		client.on(eventName, (event.bind(null, client)));
-		client.log.debug(`Successfully loaded ${eventFiles[file]}`);
+		client.log.debug("Successfully loaded", eventFiles[file]);
+		loaded.push(eventName);
 	}
+	let failed = loaded.filter((file) => !eventFiles.includes(file));
+	client.log.debug(failed.join());
 	client.log.info(`Loaded ${eventFiles.length} event${eventFiles.length === 1 ? "" : "s"}.`);
 }
 
 client.login(process.env.TOKEN)
-	.catch((err) => {
-		client.log.error(err);
+	.catch((err: Error) => {
+		client.log.error(err.stack);
 	});

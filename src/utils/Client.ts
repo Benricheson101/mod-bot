@@ -15,7 +15,6 @@ export default class extends Client {
 
 	constructor (options: ClientOptions) {
 		super(options);
-
 		this.db = new Database({
 			url: process.env.MONGO,
 			name: "mod-bot",
