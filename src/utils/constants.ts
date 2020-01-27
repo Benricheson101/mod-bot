@@ -1,11 +1,19 @@
 import { PermissionString, Snowflake } from "discord.js";
 import { Database as D } from "./types/custom";
 
-export const defaultGuild = (guildId: Snowflake): D.GuildOps => {
+export const defaults = {
+	prefix: "modbot:"
+};
+
+export const defaultGuild = (guildId: Snowflake): D.GuildDB => {
 	return {
 		id: guildId,
-		prefix: "!!",
-		infNotify: true
+		prefix: defaults.prefix,
+		mentionPrefix: true,
+		infNotify: true,
+		infractions: [],
+		infId: 0,
+		roles: {}
 	};
 };
 

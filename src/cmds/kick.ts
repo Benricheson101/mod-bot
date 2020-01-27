@@ -4,10 +4,11 @@ import { GuildMember, Util } from "discord.js";
 
 export = <C.ICommand>{
 	config: {
-		name: "kick"
+		name: "kick",
+		channelType: "text"
 	},
 	async run (client, message, args) {
-		let guild: D.GuildOps = await client.db.guilds.findOne({ id: message.guild.id });
+		let guild: D.GuildDB = await client.db.guilds.findOne({ id: message.guild.id });
 		if (!message.member.permissions.has(2)) return message.channel.send(errors.userPerms(["KICK_MEMBERS"]));
 		if (!message.guild.me.permissions.has(2)) return message.channel.send(errors.botPerms(["KICK_MEMBERS"]));
 		if (!args[0]) return message.channel.send(errors.usage);
@@ -34,6 +35,15 @@ export = <C.ICommand>{
 				client.log.warning(err);
 				message.channel.send(errors.generic);
 			});
+
+		await client.infractions.create(message.guild.id, <D.Infraction>{
+			date: new Date(),
+			moderator: message.author.id,
+			user: member.id,
+			type: "kick",
+			reason: reason
+		});
+
 		await message.channel.send(`:white_check_mark: Kicked \`${member.user.tag}\` (\`${member.id}\`) \n> Moderator: \`${message.author.tag}\` (\`${message.author.id}\`)${reason ? `\n> Reason: \`${reason}\`` : ""}`);
 	}
 };

@@ -3,7 +3,8 @@ import { Message } from "discord.js";
 
 export = <C.ICommand>{
 	config: {
-		name: "ping"
+		name: "ping",
+		aliases: ["p"]
 	},
 
 	async run (client, message) {

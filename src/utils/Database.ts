@@ -1,4 +1,4 @@
-import { connect, MongoClientOptions, Db, Collection } from "mongodb";
+import { connect, Collection } from "mongodb";
 import { Database as D } from "../utils/types/custom";
 
 export class Database {
@@ -23,9 +23,9 @@ export class Database {
 	 * Get the saved guilds
 	 * @example
 	 * Client.db.guilds.findOne({ id: 123 })
-	 * @returns {Collection<GuildOps>} - The guild's settings document
+	 * @returns {Collection<GuildDB>} - The guild's settings document
 	 */
-	get guilds (): Collection<D.GuildOps> {
+	get guilds (): Collection<D.GuildDB> {
 		return this.db.collection("guilds");
 	}
 

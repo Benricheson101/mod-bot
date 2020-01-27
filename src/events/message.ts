@@ -1,33 +1,46 @@
 import { Database as D, Command } from "../utils/types/custom";
-import { defaultGuild, errors } from "../utils/constants";
-import { Channel, Collection, Message } from "discord.js";
+import { defaultGuild, errors, defaults } from "../utils/constants";
+import { Message, Snowflake } from "discord.js";
 import Client from "../utils/Client";
 
-export = async (client: Client, message: Message): Promise<Command.ICommand> => {
+export = async (client: Client, message: Message): Promise<Message> => {
 	if (message.author.bot) return;
-	let guild: D.GuildOps = await client.db.guilds.findOne(<D.GuildOps>{
-		id: message.guild.id
-	});
+	let guild: any = defaults;
 
-	if (!guild) {
-		guild = defaultGuild(message.guild.id);
-		await client.db.guilds.insertOne(<D.GuildOps>guild);
+	if (message.channel.type === "text") {
+		guild = await client.db.guilds.findOne(<D.GuildDB>{
+			id: message.guild.id
+		});
+
+		if (!guild) {
+			guild = defaultGuild(message.guild.id);
+			await client.db.guilds.insertOne(guild);
+		}
 	}
-
-
 
 	if (message.content.indexOf(guild.prefix) !== 0) return;
 	const args: string[] = message.content.slice(guild.prefix.length).split(" ");
 	let command: string = args.shift().toLowerCase();
 
 	let cmd: Command.ICommand = client.commands.get(command)
-		|| client.commands.find((config) => config.aliases && config.aliases.includes(command));
+		|| client.commands.find((c) => c.config.aliases && c.config.aliases.includes(command));
 	if (!cmd) return;
 
-		cmd.run(client, message, args)
-			.catch((err: Error) => {
-				console.error(err.message);
-				client.log.error(err.message);
-				message.channel.send(errors.generic)
-			});
+	// Command options
+	if (cmd.config.channelType && message.channel.type !== cmd.config.channelType) return;
+	if (cmd.config.ownerOnly === true && !client.options.owners.includes(message.author.id)) return;
+	if (cmd.config.role) {
+		let roles = guild.roles[cmd.config.role];
+		if (!roles) return message.channel.send(`:x: You have not setup any **${cmd.config.role}** roles for your server.`);
+		let memberRoles = message.member.roles.keyArray();
+		let matches: Snowflake[] = memberRoles.filter((r) => roles.includes(r));
+		if (!matches || matches.length === 0) return message.channel.send(":x: You don't have the required role to use this command.");
+	}
+
+	cmd.run(client, message, args)
+		.catch((err: Error) => {
+			console.error(err.stack);
+			client.log.error(err.message);
+			message.channel.send(errors.generic);
+		});
 }

@@ -1,28 +1,29 @@
-import { Client, ClientOptions, Collection } from "discord.js";
+import { Client, ClientOptions, Collection, MessageEmbed } from "discord.js";
 import { Database } from "./Database";
 import { Logger } from "verborum/dist";
-import { IConfig } from "verborum/dist/interfaces";
+import { Config }  from "verborum/dist/utils/interfaces";
+import Infraction from "./Infraction";
 
 /**
  * Discord.js client with a few other fancy things
  */
 export default class extends Client {
-	/** The MongoDB Database */
+	/** The database */
 	db;
 	/** The commands collection */
 	commands: Collection<string, any>;
-	events: Collection<string, any>;
+	/** The infractions class */
+	infractions;
 
 	constructor (options: ClientOptions) {
 		super(options);
-		this.db = new Database({
-			url: process.env.MONGO,
-			name: "mod-bot",
-			mongoOptions: {
-				useNewUrlParser: true,
-				useUnifiedTopology: true
-			}
-		});
+		if (options.enableDb !== false) this.db = new Database(options.databaseOps);
+		this.infractions = new Infraction(this);
+	}
+
+	get defaultEmbed (): MessageEmbed {
+		return new MessageEmbed()
+			.setColor(this.options.defaultColor ?? "#42aaf5");
 	}
 
 	/**
@@ -30,7 +31,7 @@ export default class extends Client {
 	 * @return {Logger} - The Verborum logger
 	 */
 	get log (): Logger {
-		let ops: IConfig = this.options.loggerOps;
+		let ops: Config = this.options.loggerOps;
 		let name: string = "logs";
 		if (ops.name) name = ops.name;
 		let logger: Logger = new Logger(name, ops);
