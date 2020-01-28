@@ -5,7 +5,8 @@ import { GuildMember } from "discord.js";
 export = <C.ICommand>{
 	config: {
 		name: "ban",
-		channelType: "text"
+		channelType: "text",
+		role: "moderator"
 	},
 	async run (client, message, args) {
 		let guild: D.GuildDB = await client.db.guilds.findOne({ id: message.guild.id });

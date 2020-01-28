@@ -15,6 +15,6 @@ export = <C.ICommand>{
 		let inf = await client.infractions.getGuild(message.guild.id, args[0]);
 		if (!inf) return message.channel.send(`:x: I could not find an infraction with the ID: \`${args[0]}\``);
 		if (client.options.owners.includes(message.author.id)) await message.channel.send(JSON.stringify(inf, null, 2), { code: "JSON" });
-		await message.channel.send({ embed: client.infractions.generateInfEmbed(message, inf) });
+		await message.channel.send({ embed: await client.infractions.generateInfEmbed(message, inf) });
 	}
 };

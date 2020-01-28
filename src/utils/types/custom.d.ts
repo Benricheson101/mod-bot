@@ -131,8 +131,6 @@ declare namespace Database {
 }
 
 declare namespace Infraction {
-	import GuildDB = Database.GuildDB;
-
 	export class Infraction {
 		constructor (client: Client);
 
@@ -166,6 +164,6 @@ declare namespace Infraction {
 		 * @param {Database.Infraction} infraction - The infraction
 		 * @return {MessageEmbed} - The embed object
 		 */
-		generateInfEmbed (message: Message, infraction: Database.Infraction): MessageEmbed;
+		generateInfEmbed (message: Message, infraction: Database.Infraction): Promise<MessageEmbed>;
 	}
 }

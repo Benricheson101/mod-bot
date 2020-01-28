@@ -5,8 +5,8 @@ export = <C.ICommand>{
 	config: {
 		name: "warn",
 		aliases: ["warning", "add-inf"],
-		channelType: "text",
-		role: "moderator"
+		channelType: "text"
+		//role: "moderator"
 	},
 
 	async run (client, message, args) {
@@ -18,6 +18,17 @@ export = <C.ICommand>{
 
 		let reason: string = args.slice(1).join(" ");
 
+		let db = await message.guild.db;
+		let notified: string;
+		if (db.infNotify) {
+			try {
+				await member.send(`You were warned in \`${message.guild.name}\`${reason ? `\n> Reason: \`${reason}\`` : ""}\n> Infraction ID: ${db.infId + 1}`);
+				notified = "User was notified.";
+			} catch (err) {
+				notified = "Unable to notify user.";
+			}
+		} else notified = "Infraction notifications are disabled for this server.";
+
 		await client.infractions.create(message.guild.id, <D.Infraction>{
 			date: new Date(),
 			moderator: message.author.id,
@@ -26,17 +37,6 @@ export = <C.ICommand>{
 			reason: reason
 		});
 
-		let db = await message.guild.db;
-		let notified: string;
-		if (db.infNotify) {
-			try {
-				await member.send(`You were warned in \`${message.guild.name}\`${reason ? `\n> Reason: \`${reason}\`` : ""}\n> Infraction ID: ${db.infId}`);
-				notified = "User was notified.";
-			} catch (err) {
-				notified = "Unable to notify user.";
-			}
-		} else notified = "Infraction notifications are disabled for this server.";
-
-		await message.channel.send(`\`[${db.infId}]\` Warned \`${member.user.tag}\` (\`${member.id}\`) \n> Moderator: \`${message.author.tag}\` (\`${message.author.id}\`)${reason ? `\n> Reason: \`${reason}\`` : ""}\n> Notified: ${notified}`);
+		await message.channel.send(`\`[${db.infId + 1}]\` Warned \`${member.user.tag}\` (\`${member.id}\`) \n> Moderator: \`${message.author.tag}\` (\`${message.author.id}\`)${reason ? `\n> Reason: \`${reason}\`` : ""}\n> Notified: ${notified}`);
 	}
 };

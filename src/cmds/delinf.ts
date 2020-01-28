@@ -15,7 +15,6 @@ export = <C.ICommand>{
 		result = result.result;
 		if (result.n === 0 || result.nModified === 0) return message.channel.send(`:x: I could not find an infraction with the ID: \`${args[0]}\``);
 		if (result.ok !== 1) return message.channel.send(errors.generic);
-		console.log(oldInf);
-		await message.channel.send(`:white_check_mark: Successfully deleted infraction: \`${args[0]}\``, {embed: client.infractions.generateInfEmbed(message, await oldInf)});
+		await message.channel.send(`:white_check_mark: Successfully deleted infraction: \`${args[0]}\``, {embed: await client.infractions.generateInfEmbed(message, await oldInf)});
 	}
 }

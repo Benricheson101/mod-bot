@@ -2,7 +2,7 @@ import { Database as D, Database, Infraction } from "./types/custom";
 import Client from "./Client";
 import GuildDB = Database.GuildDB;
 import { UpdateWriteOpResult } from "mongodb";
-import { GuildMember, Message, MessageEmbed, Snowflake } from "discord.js";
+import { GuildMember, Message, MessageEmbed, Snowflake, User } from "discord.js";
 
 export default class implements Infraction.Infraction {
 	constructor (private client: Client) {
@@ -52,16 +52,11 @@ export default class implements Infraction.Infraction {
 		};
 	}
 
-	generateInfEmbed (message: Message, infraction: D.Infraction): MessageEmbed {
+	async generateInfEmbed (message: Message, infraction: D.Infraction): Promise<MessageEmbed> {
 		return this.client.defaultEmbed
-			.setDescription(`**Moderator**: ${getMember(infraction.moderator).user.tag} (${infraction.moderator})\n**Reason**: ${infraction.reason || "no reason provided"}`)
+			.setDescription(`**Moderator**: ${(await this.client.getUser(infraction.moderator)).tag} (${infraction.moderator})\n**Reason**: ${infraction.reason || "no reason provided"}`)
 			.setTimestamp(infraction.date)
 			.setFooter(`Type: ${infraction.type} | ID: ${infraction.id}`)
-			.setAuthor(`${getMember(infraction.user).user.tag} (${infraction.user})`, getMember(infraction.user).user.avatar);
-
-		// todo: use user instead of guildmember to enable checking users not in the server
-		function getMember (id: Snowflake): GuildMember {
-			return message.guild.members.find((m: GuildMember) => m.id === id);
-		}
+			.setAuthor(`${(await this.client.getUser(infraction.user)).tag} (${infraction.user})`, (await this.client.getUser(infraction.user)).displayAvatarURL({ format: "png" }));
 	}
 }

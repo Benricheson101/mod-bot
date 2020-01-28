@@ -1,7 +1,7 @@
-import { Client, ClientOptions, Collection, MessageEmbed } from "discord.js";
+import { Client, ClientOptions, Collection, MessageEmbed, Snowflake, User } from "discord.js";
 import { Database } from "./Database";
 import { Logger } from "verborum/dist";
-import { Config }  from "verborum/dist/utils/interfaces";
+import { Config } from "verborum/dist/utils/interfaces";
 import Infraction from "./Infraction";
 
 /**
@@ -21,9 +21,24 @@ export default class extends Client {
 		this.infractions = new Infraction(this);
 	}
 
+	/**
+	 * A "default embed", one with just the color set to the default color
+	 * @return {MessageEmbed}
+	 */
 	get defaultEmbed (): MessageEmbed {
 		return new MessageEmbed()
 			.setColor(this.options.defaultColor ?? "#42aaf5");
+	}
+
+	/**
+	 * Get a user
+	 * @param {Snowflake} user
+	 * @return {User | Promise<User>}
+	 */
+	async getUser (user: Snowflake): Promise<User> {
+		return this.users.find((u) => u.id === user)
+			|| await this.users.fetch(user)
+			|| null;
 	}
 
 	/**

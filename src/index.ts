@@ -11,7 +11,7 @@ const client: Client = new Client({
 	owners: ["255834596766253057"],
 	loggerOps: {
 		name: "mod-bot",
-		logLevel: Level.Debug,
+		logLevel: 5,
 		enableLogs: true,
 		logDirectory: "build/utils/logs",
 		logFormat: "{{h12}} [{{clrst}}{{lvl}}{{clrend}}] {{name}}: {{clrst}}{{msg}}{{clrend}}"
@@ -61,7 +61,7 @@ if (!eventFiles || eventFiles.length < 1) {
 		loaded.push(eventName);
 	}
 	let failed = loaded.filter((file) => !eventFiles.includes(file + ".js"));
-	if (failed.length !== 0) client.log.warning("Failed to load:", failed.join());
+	if (failed.length !== 0) client.log.warning("Failed to load:", failed.join(", "));
 	client.log.info(`Loaded ${eventFiles.length} event${eventFiles.length === 1 ? "" : "s"}.`);
 }
 
