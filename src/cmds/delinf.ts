@@ -1,4 +1,4 @@
-import { Command as C } from "../utils/types/custom";
+import { Command as C } from "../utils/types/index";
 import { errors } from "../utils/constants";
 
 export = <C.ICommand>{

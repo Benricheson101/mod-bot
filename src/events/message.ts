@@ -1,4 +1,4 @@
-import { Database as D, Command } from "../utils/types/custom";
+import { Database as D, Command } from "../utils/types/index";
 import { defaultGuild, errors, defaults } from "../utils/constants";
 import { Message, Snowflake } from "discord.js";
 import Client from "../utils/Client";

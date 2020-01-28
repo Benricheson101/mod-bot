@@ -1,4 +1,4 @@
-import { Command as C } from "../utils/types/custom";
+import { Command as C } from "../utils/types/index";
 import { Message } from "discord.js";
 
 export = <C.ICommand>{

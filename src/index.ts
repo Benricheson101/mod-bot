@@ -2,7 +2,7 @@ import Client from "./utils/Client";
 import { Level } from "verborum/dist";
 import { readdirSync } from "fs";
 import { Collection } from "discord.js";
-import { Command } from "./utils/types/custom";
+import { Command } from "./utils/types/index";
 
 require("./utils/StructureExtensions");
 const client: Client = new Client({

@@ -1,8 +1,8 @@
-import { Database as D, Database, Infraction } from "./types/custom";
+import { Database as D, Database, Infraction } from "./types/index";
 import Client from "./Client";
 import GuildDB = Database.GuildDB;
 import { UpdateWriteOpResult } from "mongodb";
-import { GuildMember, Message, MessageEmbed, Snowflake, User } from "discord.js";
+import { Message, MessageEmbed } from "discord.js";
 
 export default class implements Infraction.Infraction {
 	constructor (private client: Client) {
@@ -26,6 +26,7 @@ export default class implements Infraction.Infraction {
 			});
 			return infractions.find((inf) => inf.id === +infId);
 		}
+		// todo: make this return the right thing
 		if (!infId) {
 			let inf = await this.client.db.guilds.find({ id: guild });
 			let infs = [];

@@ -1,5 +1,5 @@
 import { PermissionString, Snowflake } from "discord.js";
-import { Database as D } from "./types/custom";
+import { Database as D } from "./types/index";
 
 export const defaults = {
 	prefix: "modbot:"
