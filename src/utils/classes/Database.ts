@@ -1,5 +1,5 @@
 import { connect, Collection } from "mongodb";
-import { Database as D } from "../utils/types/index";
+import { Database as D } from "../types";
 
 export class Database {
 	db;

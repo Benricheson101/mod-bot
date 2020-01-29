@@ -109,4 +109,4 @@ dist
 # Other things
 build
 .idea
-/src/cmds/test.ts
+/src/cmds/admin/test.ts

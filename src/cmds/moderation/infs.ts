@@ -1,5 +1,5 @@
-import { Command as C, Database, Infraction } from "../utils/types/index";
-import { errors } from "../utils/constants";
+import { Command as C, Database, Infraction } from "../../utils/types";
+import { errors } from "../../utils/constants";
 import { MessageEmbed, User } from "discord.js";
 
 export = <C.ICommand>{

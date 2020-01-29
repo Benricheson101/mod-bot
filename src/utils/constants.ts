@@ -13,7 +13,9 @@ export const defaultGuild = (guildId: Snowflake): D.GuildDB => {
 		infNotify: true,
 		infractions: [],
 		infId: 0,
-		roles: {}
+		roles: {},
+		commands: [],
+		CCID: 0
 	};
 };
 

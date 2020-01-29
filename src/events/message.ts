@@ -1,7 +1,7 @@
 import { Database as D, Command } from "../utils/types/index";
 import { defaultGuild, errors, defaults } from "../utils/constants";
 import { Message, Snowflake } from "discord.js";
-import Client from "../utils/Client";
+import Client from "../utils/classes/Client";
 
 export = async (client: Client, message: Message): Promise<Message> => {
 	if (message.author.bot) return;
@@ -24,7 +24,15 @@ export = async (client: Client, message: Message): Promise<Message> => {
 
 	let cmd: Command.ICommand = client.commands.get(command)
 		|| client.commands.find((c) => c.config.aliases && c.config.aliases.includes(command));
-	if (!cmd) return;
+
+	if (!cmd) {
+		if (message.channel.type === "text" && guild.commands.length > 0) {
+			let checkCmd = guild.commands.find((c) => c.name === command);
+			if (checkCmd) {
+				return message.channel.send(checkCmd.message);
+			} else return;
+		} else return;
+	}
 
 	// Command options
 	if (cmd.config.channelType && message.channel.type !== cmd.config.channelType) return;

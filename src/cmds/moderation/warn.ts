@@ -1,4 +1,4 @@
-import { Command as C, Database as D } from "../utils/types/index";
+import { Command as C, Database as D } from "../../utils/types";
 import { GuildMember } from "discord.js";
 
 export = <C.ICommand>{

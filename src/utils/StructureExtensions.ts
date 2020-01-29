@@ -1,5 +1,5 @@
 import { Guild, Structures } from "discord.js";
-import Client from "./Client";
+import Client from "./classes/Client";
 import { Database } from "./types/index";
 import GuildDB = Database.GuildDB;
 

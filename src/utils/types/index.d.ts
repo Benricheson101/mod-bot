@@ -3,7 +3,7 @@ import "verborum";
 import { Config } from "verborum/dist/utils/interfaces";
 import { Level } from "verborum/dist";
 import { Message, MessageEmbed, Snowflake } from "discord.js";
-import Client from "../Client";
+import Client from "../classes/Client";
 import { MongoClientOptions } from "mongodb";
 
 declare module "discord.js" {
@@ -88,7 +88,7 @@ declare namespace Database {
 		infNotify: boolean;
 		/** Infractions */
 		infractions: Infraction[];
-		/** Auto assigned */
+		/** Auto incrementing infraction ID number */
 		infId: number;
 		/** Roles */
 		roles: {
@@ -97,6 +97,10 @@ declare namespace Database {
 			/** Users with these roles have access to higher-level commands (tbd) */
 			admin?: Snowflake[];
 		}
+		/** Custom commands */
+		commands?: CustomCommand[]
+		/** Auto incrementing custom command ID number */
+		CCID: number;
 	}
 
 	/**
@@ -128,6 +132,20 @@ declare namespace Database {
 		/** What type of infraction */
 		type: "warn" | "kick" | "ban";
 	}
+
+	/**
+	 * Custom commands
+	 */
+	export interface CustomCommand {
+		/** The user who created the command */
+		user: Snowflake;
+		/** The command name */
+		name: string;
+		/** The message the command should respond to */
+		message: string;
+		/** Auto-assigned ID */
+		id?: number;
+	}
 }
 
 declare namespace Infraction {
@@ -143,6 +161,14 @@ declare namespace Infraction {
 		create (guild: Snowflake, infraction: Database.Infraction): Promise<Database.Infraction>;
 
 		/**
+		 * Delete an infraction
+		 * @param {Snowflake} guild - The guildId
+		 * @param {Database.Infraction | number} infraction - The infractionId
+		 * @return {object}
+		 */
+		delete (guild: Snowflake, infraction: number): object;
+
+		/**
 		 * Get all of the infractions for a guild.
 		 * @param {Snowflake} guild - The guildId
 		 * @param {number} infractionId - *Optional* get one infraction
@@ -150,13 +176,6 @@ declare namespace Infraction {
 		 */
 		getGuild (guild: Snowflake, infractionId?: number): Promise<Database.Infraction | Database.Infraction[] | void>;
 
-		/**
-		 * Delete an infraction
-		 * @param {Snowflake} guild - The guildId
-		 * @param {Database.Infraction | number} infraction - The infractionId
-		 * @return {Object}
-		 */
-		delete (guild: Snowflake, infraction: number): Object;
 
 		/**
 		 * Generate an infraction embed
@@ -165,5 +184,35 @@ declare namespace Infraction {
 		 * @return {MessageEmbed} - The embed object
 		 */
 		generateInfEmbed (message: Message, infraction: Database.Infraction): Promise<MessageEmbed>;
+	}
+}
+
+declare namespace CustomCommand {
+	export class CustomCommand {
+		constructor (client: Client);
+
+		/**
+		 * Create a custom command
+		 * @param {Snowflake} guild - The ID of the guild where the command will be saved
+		 * @param {Database.CustomCommand} command
+		 * @return {Promise<Database.CustomCommand>}
+		 */
+		create (guild: Snowflake, command: Database.CustomCommand): Promise<Database.CustomCommand>;
+
+		/**
+		 * Delete a custom command
+		 * @param {Snowflake} guild - The guildId
+		 * @param {string | number} command - The command to delete (either the command name or ID)
+		 * @return {Promise<object>}
+		 */
+		delete (guild: Snowflake, command?: string | number): Promise<object>;
+
+		/**
+		 * Get all of (or a single) guild's custom commands
+		 * @param {Snowflake} guild - The guildId
+		 * @param {number} [CCID] - The ID of the custom command to return
+		 * @return {Promise<Database.CustomCommand[] | Database.CustomCommand>}
+		 */
+		getGuild (guild: Snowflake, CCID?: number): Promise<Database.CustomCommand[] | Database.CustomCommand>;
 	}
 }

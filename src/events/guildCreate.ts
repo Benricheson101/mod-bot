@@ -1,5 +1,5 @@
 import { defaultGuild } from "../utils/constants";
-import Client from "../utils/Client";
+import Client from "../utils/classes/Client";
 import { Guild } from "discord.js";
 
 export = async (client: Client, guild: Guild) => {
