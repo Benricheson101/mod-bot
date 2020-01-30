@@ -188,7 +188,14 @@ declare namespace Infraction {
 }
 
 declare namespace CustomCommand {
+	/**
+	 * Custom commands
+	 */
 	export class CustomCommand {
+		/**
+		 * Discord client
+		 * @param {Client} client
+		 */
 		constructor (client: Client);
 
 		/**
@@ -215,4 +222,20 @@ declare namespace CustomCommand {
 		 */
 		getGuild (guild: Snowflake, CCID?: number): Promise<Database.CustomCommand[] | Database.CustomCommand>;
 	}
+}
+
+declare namespace Embed {
+	export class Embed {
+		static pages (message: Message, content: any[], time?: number, emojis?: PageEmojis): Promise<any>;
+	}
+
+	interface PageEmojis {
+		/** Left emoji */
+		left: string;
+		/** Right emoji */
+		right: string;
+
+		end: string;
+	}
+
 }

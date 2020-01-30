@@ -1,6 +1,6 @@
 import { Guild, Structures } from "discord.js";
 import Client from "./classes/Client";
-import { Database } from "./types/index";
+import { Database } from "./types";
 import GuildDB = Database.GuildDB;
 
 Structures.extend("GuildMember", (GM) => {

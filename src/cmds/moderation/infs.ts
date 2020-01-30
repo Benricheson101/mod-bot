@@ -1,6 +1,9 @@
 import { Command as C, Database, Infraction } from "../../utils/types";
 import { errors } from "../../utils/constants";
-import { MessageEmbed, User } from "discord.js";
+import { Message, MessageEmbed, MessageReaction, ReactionCollector, User } from "discord.js";
+import { strict } from "assert";
+import { stringify } from "querystring";
+import { Embed } from "../../utils/classes/Embed";
 
 export = <C.ICommand>{
 	config: {
@@ -29,6 +32,19 @@ export = <C.ICommand>{
 				await message.channel.send(await generateInfsEmbed(userInfs));
 				break;
 			}
+
+			case ("pages"): {
+				let content = [];
+				let g = guild.infractions;
+
+				while (g.length > 0) {
+					content.push("```json\n" + JSON.stringify(g.splice(0, 4), null, 2) + "```");
+				}
+
+				await Embed.pages(message, content);
+				break;
+			}
+
 			case ("server"):
 			case ("guild"):
 			default: {
@@ -64,6 +80,14 @@ export = <C.ICommand>{
 			}
 			return embed;
 		}
-
 	}
 };
+
+interface PageEmojis {
+	/** Left emoji */
+	left: string;
+	/** Right emoji */
+	right: string;
+
+	end: string;
+}

@@ -1,6 +1,5 @@
-import { Database as D, Database, Infraction } from "../types";
+import { Database as D, Infraction } from "../types";
 import Client from "./Client";
-import GuildDB = Database.GuildDB;
 import { UpdateWriteOpResult } from "mongodb";
 import { Message, MessageEmbed } from "discord.js";
 
@@ -29,7 +28,7 @@ export default class implements Infraction.Infraction {
 		if (!infId) {
 			let inf = await this._client.db.guilds.find({ id: guild });
 			let infs = [];
-			await inf.forEach((item: GuildDB) => {
+			await inf.forEach((item: D.GuildDB) => {
 				if (!item) return;
 				infs.push(item.infractions);
 			});

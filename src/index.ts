@@ -12,7 +12,7 @@ const client: Client = new Client({
 	owners: ["255834596766253057"],
 	loggerOps: {
 		name: "mod-bot",
-		logLevel: 5,
+		logLevel: 4,
 		enableLogs: true,
 		logDirectory: "build/utils/logs",
 		logFormat: "{{h12}} [{{clrst}}{{lvl}}{{clrend}}] {{name}}: {{clrst}}{{msg}}{{clrend}}"
@@ -27,52 +27,23 @@ const client: Client = new Client({
 	}
 });
 
-client.db
+client
+	.db
 	.connect()
 	.then(() => client.log.debug("Connected to the database."))
 	.catch((err) => {
 		client.log.error(err);
 	});
 
-/*let cmdFiles: string[] = readdirSync("build/cmds");
-client.commands = new Collection();
-if (!cmdFiles || cmdFiles.length < 1) {
-	client.log.warning("No commands found.");
-} else {
-	for (let file in cmdFiles) {
-		if (!cmdFiles[file].endsWith(".js")) break;
-		let cmd: Command.ICommand = require("../build/cmds/" + cmdFiles[file]);
-		client.commands.set(cmd.config.name, cmd);
-		client.log.debug("Successfully loaded", cmdFiles[file]);
-	}
-	client.log.info(`Loaded ${client.commands.size} command${client.commands.size === 1 ? "" : "s"}.`);
-}*/
-
-/*
-const { resolve } = require('path');
-const { readdir } = require('fs').promises;
-
-async function* getFiles(dir) {
-  const dirents = await readdir(dir, { withFileTypes: true });
-  for (const dirent of dirents) {
-    const res = resolve(dir, dirent.name);
-    if (dirent.isDirectory()) {
-      yield* getFiles(res);
-    } else {
-      yield res;
-    }
-  }
-}
-*/
 // recursive command loading
 client.commands = new Collection();
 (async () => {
 	let files = await getFiles("build/cmds");
 	for await (let file of files) {
-			if (!file.endsWith(".js")) break;
-			let cmd: Command.ICommand = require(file);
-			client.commands.set(cmd.config.name, cmd);
-			client.log.debug("[C] Successfully loaded", file);
+		if (!file.endsWith(".js")) break;
+		let cmd: Command.ICommand = require(file);
+		client.commands.set(cmd.config.name, cmd);
+		client.log.debug("[C] Successfully loaded", file);
 	}
 })();
 
