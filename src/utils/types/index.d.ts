@@ -80,23 +80,26 @@ declare namespace Database {
 	export interface GuildDB {
 		/** The server's ID */
 		id: Snowflake;
-		/** The server's prefix */
-		prefix: string;
-		/** Should the bot respond to @ mentions */
-		mentionPrefix?: boolean;
-		/** Should users be DM'd when they receive an infraction */
-		infNotify: boolean;
+		/** The server's configuration */
+		config: {
+			/** The server's prefix */
+			prefix: string;
+			/** Should the bot respond to @ mentions */
+			mentionPrefix?: boolean;
+			/** Should users be DM'd when they receive an infraction */
+			infNotify: boolean;
+			/** Roles */
+			roles: {
+				/** Users with these roles have access to moderation commands (ban, kick, warn) */
+				moderator?: Snowflake[];
+				/** Users with these roles have access to higher-level commands (tbd) */
+				admin?: Snowflake[];
+			}
+		}
 		/** Infractions */
 		infractions: Infraction[];
 		/** Auto incrementing infraction ID number */
 		infId: number;
-		/** Roles */
-		roles: {
-			/** Users with these roles have access to moderation commands (ban, kick, warn) */
-			moderator?: Snowflake[];
-			/** Users with these roles have access to higher-level commands (tbd) */
-			admin?: Snowflake[];
-		}
 		/** Custom commands */
 		commands?: CustomCommand[]
 		/** Auto incrementing custom command ID number */
@@ -226,7 +229,7 @@ declare namespace CustomCommand {
 
 declare namespace Embed {
 	export class Embed {
-		static pages (message: Message, content: any[], time?: number, emojis?: PageEmojis): Promise<any>;
+		static pages (message: Message, content: any[], time?: number, emojis?: PageEmojis, startPage?: number): Promise<any>;
 	}
 
 	interface PageEmojis {

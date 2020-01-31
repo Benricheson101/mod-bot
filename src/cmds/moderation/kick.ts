@@ -21,7 +21,7 @@ export = <C.ICommand>{
 		let reason: string = args.slice(1).join(" ");
 
 		let notified: string;
-		if (guild.infNotify) {
+		if (guild.config.infNotify) {
 			try {
 				await member.send(`You were banned from \`${message.guild.name}\`${reason ? `\n> Reason: \`${reason}\`` : ""}`);
 				notified = "User was notified.";

@@ -8,12 +8,14 @@ export const defaults = {
 export const defaultGuild = (guildId: Snowflake): D.GuildDB => {
 	return {
 		id: guildId,
+		config: {
 		prefix: defaults.prefix,
 		mentionPrefix: true,
 		infNotify: true,
+		roles: {}
+		},
 		infractions: [],
 		infId: 0,
-		roles: {},
 		commands: [],
 		CCID: 0
 	};

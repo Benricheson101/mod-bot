@@ -1,8 +1,6 @@
-import { Command as C, Database, Infraction } from "../../utils/types";
+import { Command as C, Database } from "../../utils/types";
 import { errors } from "../../utils/constants";
-import { Message, MessageEmbed, MessageReaction, ReactionCollector, User } from "discord.js";
-import { strict } from "assert";
-import { stringify } from "querystring";
+import { MessageEmbed, User } from "discord.js";
 import { Embed } from "../../utils/classes/Embed";
 
 export = <C.ICommand>{
@@ -16,52 +14,28 @@ export = <C.ICommand>{
 		let sub: string = args[0];
 		if (sub) args = args.slice(1);
 
-		// todo: paginate
+		//todo: JSON instead of embed?
 		let guild = await message.guild.db;
-		// let infs: string;
 		switch (sub) {
 			case ("member"):
 			case ("user"): {
-				// user infs
 				if (!args[0]) return message.channel.send(errors.usage);
 				let user: User = message.mentions.users.first() || await client.getUser(args[0]);
 				if (!user) return message.channel.send(":x: I could not find that user");
-				let userInfs = guild.infractions.filter((inf) => inf.user === user.id);
+				let userInfs: Database.Infraction[] = guild.infractions.filter((inf) => inf.user === user.id);
 				if (!userInfs) return message.channel.send(":x: That user doesn't have any infractions");
-				// infs = userInfs;
-				await message.channel.send(await generateInfsEmbed(userInfs));
+				await generateEmbedArr(userInfs, { start: args[1], perEmbed: 4 });
 				break;
 			}
-
-			case ("pages"): {
-				let content = [];
-				let g = guild.infractions;
-
-				while (g.length > 0) {
-					content.push("```json\n" + JSON.stringify(g.splice(0, 4), null, 2) + "```");
-				}
-
-				await Embed.pages(message, content);
-				break;
-			}
-
 			case ("server"):
 			case ("guild"):
 			default: {
-				// guild infs
-				let guildInfs = guild.infractions;
-				if (!guildInfs) return message.channel.send(":x: This guild has no infractions");
-				// infs = guildInfs;
-				await message.channel.send(await generateInfsEmbed(guildInfs));
+				await generateEmbedArr((await message.guild.db).infractions, { start: args[0], perEmbed: 4 });
 				break;
 			}
 		}
 
-		/*infs = JSON.stringify(infs, null, 2);
-		if (infs.length > 2000) infs = infs.substring(0, 2000);
-		await message.channel.send(infs, { code: "JSON" });*/
-
-		async function generateInfsEmbed (infs: Database.Infraction): Promise<MessageEmbed> {
+		async function generateInfsEmbed (infs: Database.Infraction[]): Promise<MessageEmbed> {
 			let embed = client.defaultEmbed
 				.setFooter("Note: Only 25 infractions can be shown at once");
 			let timesRun = 0;
@@ -80,14 +54,34 @@ export = <C.ICommand>{
 			}
 			return embed;
 		}
+
+		async function generateEmbedArr (g: any[], ops: any) {
+			let content = [];
+			let length: number = g.length;
+			let perEmbed: number = ops.perEmbed ?? 4;
+			let start: number = --ops.start ?? 0;
+			let totalPages: number = Math.ceil(length / perEmbed);
+			if (isNaN(start) || start > totalPages || start < 1) start = 0;
+			console.log(start);
+
+			while (g.length > 0) {
+				let arr = g.splice(0, perEmbed);
+				let embed = client.defaultEmbed
+					.setFooter(`Page: ${content.length + 1} of ${totalPages} | Total Infractions: ${length}`);
+				arr.forEach((infraction: Database.Infraction) => {
+					let c = [];
+					for (let key in infraction) {
+						if (infraction.hasOwnProperty(key)) {
+							if (!infraction[key]) break;
+							c.push(`**${key}**: ${infraction[key]}`);
+						}
+					}
+					embed.addField(`ID: ${infraction.id}`, c.join("\n"));
+				});
+				content.push(embed);
+			}
+			await Embed.pages(message, content, null, null, start);
+			return content;
+		}
 	}
 };
-
-interface PageEmojis {
-	/** Left emoji */
-	left: string;
-	/** Right emoji */
-	right: string;
-
-	end: string;
-}

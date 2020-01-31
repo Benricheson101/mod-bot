@@ -15,6 +15,6 @@ export = <C.ICommand>{
 		while (ccs.length > 0) {
 			content.push("```JSON\n" + JSON.stringify(ccs.splice(0, 4), null, 2) + "```");
 		}
-		await Embed.pages(message, content);
+		await Embed.pages(message, content, null, null, args[0]);
 	}
 };

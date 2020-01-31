@@ -8,9 +8,9 @@ export = async (client: Client, message: Message): Promise<Message> => {
 	let guild: any = defaults;
 
 	if (message.channel.type === "text") {
-		guild = await client.db.guilds.findOne(<D.GuildDB>{
+		guild = await client.db.guilds.findOne({
 			id: message.guild.id
-		});
+		} as D.GuildDB);
 
 		if (!guild) {
 			guild = defaultGuild(message.guild.id);
@@ -18,8 +18,8 @@ export = async (client: Client, message: Message): Promise<Message> => {
 		}
 	}
 
-	if (message.content.indexOf(guild.prefix) !== 0) return;
-	const args: string[] = message.content.slice(guild.prefix.length).split(" ");
+	if (message.content.indexOf(guild.config.prefix) !== 0) return;
+	const args: string[] = message.content.slice(guild.config.prefix.length).split(" ");
 	let command: string = args.shift().toLowerCase();
 
 	let cmd: Command.ICommand = client.commands.get(command)
@@ -35,14 +35,16 @@ export = async (client: Client, message: Message): Promise<Message> => {
 	}
 
 	// Command options
-	if (cmd.config.channelType && message.channel.type !== cmd.config.channelType) return;
-	if (cmd.config.ownerOnly === true && !client.options.owners.includes(message.author.id)) return;
-	if (cmd.config.role) {
-		let roles = guild.roles[cmd.config.role];
-		if (!roles) return message.channel.send(`:x: You have not setup any **${cmd.config.role}** roles for your server.`);
-		let memberRoles = message.member.roles.keyArray();
-		let matches: Snowflake[] = memberRoles.filter((r) => roles.includes(r));
-		if (!matches || matches.length === 0) return message.channel.send(":x: You don't have the required role to use this command.");
+	if (!client.options.owners.includes(message.author.id)) {
+		if (cmd.config.channelType && message.channel.type !== cmd.config.channelType) return;
+		if (cmd.config.ownerOnly === true && !client.options.owners.includes(message.author.id)) return;
+		if (cmd.config.role) {
+			let roles = guild.config.roles[cmd.config.role];
+			if (!roles) return message.channel.send(`:x: You have not setup any **${cmd.config.role}** roles for your server.`);
+			let memberRoles = message.member.roles.keyArray();
+			let matches: Snowflake[] = memberRoles.filter((r) => roles.includes(r));
+			if (!matches || matches.length === 0) return message.channel.send(":x: You don't have the required role to use this command.");
+		}
 	}
 
 	cmd.run(client, message, args)

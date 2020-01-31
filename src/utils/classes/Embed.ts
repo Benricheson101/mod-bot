@@ -1,5 +1,5 @@
 import Client from "./Client";
-import { Message, MessageReaction, ReactionCollector, User } from "discord.js";
+import { MessageEmbed, MessageReaction, ReactionCollector, User } from "discord.js";
 import { Embed as E } from "../types";
 
 export class Embed implements E.Embed {
@@ -9,7 +9,7 @@ export class Embed implements E.Embed {
 		this._client = client;
 	}
 
-	static async pages (message, content, time?, emojis?) {
+	static async pages (message, content, time?, emojis?, startPage?) {
 		emojis = emojis ?? {
 			left: "⬅",
 			end: "⏹",
@@ -17,9 +17,9 @@ export class Embed implements E.Embed {
 		};
 		time = time ?? 300000;
 		let filter = (reaction: MessageReaction, user: User) => Object.values(emojis).includes(reaction.emoji.name) && !user.bot && user.id === message.author.id;
-		let page: number = 0;
+		let page: number = +startPage || 0;
 
-		let msg = await message.channel.send(content[0]);
+		let msg = await message.channel.send(content[page] instanceof MessageEmbed ? { embed: content[page] } : content[page]);
 
 		for (let emoji in emojis) {
 			if (emojis.hasOwnProperty(emoji)) {
@@ -48,7 +48,10 @@ export class Embed implements E.Embed {
 					break;
 				}
 			}
-			if (msg) msg.edit(content[page]);
+			if (msg) {
+				if (content[page] instanceof MessageEmbed) msg.edit({ embed: content[page] });
+				else msg.edit(content[page]);
+			}
 		});
 	}
 }

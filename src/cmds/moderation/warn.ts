@@ -20,7 +20,7 @@ export = <C.ICommand>{
 
 		let db = await message.guild.db;
 		let notified: string;
-		if (db.infNotify) {
+		if (db.config.infNotify) {
 			try {
 				await member.send(`You were warned in \`${message.guild.name}\`${reason ? `\n> Reason: \`${reason}\`` : ""}\n> Infraction ID: ${db.infId + 1}`);
 				notified = "User was notified.";
