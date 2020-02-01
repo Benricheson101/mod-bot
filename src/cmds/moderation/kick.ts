@@ -2,7 +2,7 @@ import { Command as C, Database as D } from "../../utils/types";
 import { errors } from "../../utils/constants";
 import { GuildMember, Util } from "discord.js";
 
-export = <C.ICommand>{
+export = {
 	config: {
 		name: "kick",
 		channelType: "text",
@@ -47,4 +47,4 @@ export = <C.ICommand>{
 
 		await message.channel.send(`:white_check_mark: Kicked \`${member.user.tag}\` (\`${member.id}\`) \n> Moderator: \`${message.author.tag}\` (\`${message.author.id}\`)${reason ? `\n> Reason: \`${reason}\`` : ""}`);
 	}
-};
+} as C.Command;

@@ -1,7 +1,7 @@
 import { Command as C, Database as D } from "../../utils/types";
 import { GuildMember } from "discord.js";
 
-export = <C.ICommand>{
+export = {
 	config: {
 		name: "warn",
 		aliases: ["warning", "add-inf"],
@@ -39,4 +39,4 @@ export = <C.ICommand>{
 
 		await message.channel.send(`\`[${db.infId + 1}]\` Warned \`${member.user.tag}\` (\`${member.id}\`) \n> Moderator: \`${message.author.tag}\` (\`${message.author.id}\`)${reason ? `\n> Reason: \`${reason}\`` : ""}\n> Notified: ${notified}`);
 	}
-};
+} as C.Command;

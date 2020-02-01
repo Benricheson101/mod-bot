@@ -1,7 +1,7 @@
 import { Command as C } from "../../utils/types/index";
 import { Embed } from "../../utils/classes/Embed";
 
-export = <C.ICommand>{
+export = {
 	config: {
 		name: "cclist",
 		aliases: ["cc-list", "ccs", "list-ccs"],
@@ -17,4 +17,4 @@ export = <C.ICommand>{
 		}
 		await Embed.pages(message, content, null, null, args[0]);
 	}
-};
+} as C.Command;

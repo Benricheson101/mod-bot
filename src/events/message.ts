@@ -22,7 +22,7 @@ export = async (client: Client, message: Message): Promise<Message> => {
 	const args: string[] = message.content.slice(guild.config.prefix.length).split(" ");
 	let command: string = args.shift().toLowerCase();
 
-	let cmd: Command.ICommand = client.commands.get(command)
+	let cmd: Command.Command = client.commands.get(command)
 		|| client.commands.find((c) => c.config.aliases && c.config.aliases.includes(command));
 
 	if (!cmd) {

@@ -1,7 +1,7 @@
 import { Command as C } from "../../utils/types";
 import { errors } from "../../utils/constants";
 
-export = <C.ICommand>{
+export = {
 	config: {
 		name: "delinf",
 		aliases: ["removeinf", "remove-inf", "rm-inf", "rminf", "del-inf"],
@@ -17,4 +17,4 @@ export = <C.ICommand>{
 		if (result.ok !== 1) return message.channel.send(errors.generic);
 		await message.channel.send(`:white_check_mark: Successfully deleted infraction: \`${args[0]}\``, {embed: await client.infractions.generateInfEmbed(message, await oldInf)});
 	}
-}
+} as C.Command;

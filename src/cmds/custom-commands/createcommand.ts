@@ -2,7 +2,7 @@ import { Command as C, Database as D } from "../../utils/types";
 import CustomCommand from "../../utils/classes/CustomCommand";
 import { errors } from "../../utils/constants";
 
-export = <C.ICommand>{
+export = {
 	config: {
 		name: "createcommand",
 		aliases: ["ccc", "newcc", "new-cc", "create-command", "cc", "newcmd", "new-cmd"],
@@ -36,4 +36,4 @@ export = <C.ICommand>{
 
 		await message.channel.send(JSON.stringify(cmd, null, 2), { code: "JSON" });
 	}
-};
+} as C.Command;

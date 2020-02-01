@@ -1,7 +1,7 @@
 import { Command as C } from "../../utils/types";
 import { MessageEmbed } from "discord.js";
 
-export = <C.ICommand>{
+export = {
 	config: {
 		name: "asynceval",
 		aliases: ["asyncrun"],
@@ -55,4 +55,4 @@ export = <C.ICommand>{
 			await message.channel.send({ embed: errorEmbed });
 		}
 	}
-};
+} as C.Command;

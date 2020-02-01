@@ -10,7 +10,7 @@ export const defaultGuild = (guildId: Snowflake): D.GuildDB => {
 		id: guildId,
 		config: {
 		prefix: defaults.prefix,
-		mentionPrefix: true,
+		//mentionPrefix: true,
 		infNotify: true,
 		roles: {}
 		},

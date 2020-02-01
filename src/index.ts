@@ -40,8 +40,8 @@ client.commands = new Collection();
 (async () => {
 	let files = await getFiles("build/cmds");
 	for await (let file of files) {
-		if (!file.endsWith(".js")) break;
-		let cmd: Command.ICommand = require(file);
+		if (!file.endsWith(".js")) continue;
+		let cmd: Command.Command = require(file);
 		client.commands.set(cmd.config.name, cmd);
 		client.log.debug("[C] Successfully loaded", file);
 	}

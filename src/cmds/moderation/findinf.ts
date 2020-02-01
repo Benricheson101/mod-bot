@@ -2,7 +2,7 @@ import { Command as C, Database as D } from "../../utils/types";
 import { errors } from "../../utils/constants";
 import { GuildMember, MessageEmbed, Snowflake } from "discord.js";
 
-export = <C.ICommand>{
+export = {
 	config: {
 		name: "findinf",
 		aliases: ["find-inf", "infsearch", "inf-search", "inf"],
@@ -17,4 +17,4 @@ export = <C.ICommand>{
 		if (client.options.owners.includes(message.author.id)) await message.channel.send(JSON.stringify(inf, null, 2), { code: "JSON" });
 		await message.channel.send({ embed: await client.infractions.generateInfEmbed(message, inf) });
 	}
-};
+} as C.Command;

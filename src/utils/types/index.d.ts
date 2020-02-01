@@ -22,6 +22,12 @@ declare module "discord.js" {
 		/** The bot owners */
 		owners?: Snowflake[];
 	}
+
+	/** Guild structure */
+	export interface Guild {
+		/** The database */
+		db;
+	}
 }
 
 declare module "verborum/dist/utils/interfaces" {
@@ -42,24 +48,39 @@ declare namespace Command {
 	/**
 	 * Command file structure
 	 */
-	export interface ICommand {
-		config: {
-			/** The name of the command */
-			name: string;
-			/** Aliases for the command */
-			aliases?: string[];
-			/** Where the command can be used */
-			channelType?: "dm" | "text";
-			/** Limit the usage of this command to the bot owner only */
-			ownerOnly?: boolean;
-			/** Require a preconfigured role use the command */
-			role?: "moderator" | "admin";
-		},
+	export interface Command {
+		config: CommandOptions;
+		constructor (config: CommandOptions): void;
 
 		/**
 		 * The function to run, the actual command code
 		 */
-		run (client, message, args): Promise<void>;
+		run (client?: Client, message?, args?: string[]): Promise<void>;
+	}
+
+	/** Options for each command */
+	export interface CommandOptions {
+		/** The name of the command */
+		name: string;
+		/** Aliases for the command */
+		aliases?: string[];
+		/** Where the command can be used */
+		channelType?: "dm" | "text";
+		/** Limit the usage of this command to the bot owner only */
+		ownerOnly?: boolean;
+		/** Require a preconfigured role use the command */
+		role?: "moderator" | "admin";
+		/** Stuff for the help command */
+		help?: {
+			/** What the command does */
+			description?: string;
+			/** Command syntax */
+			usage?: string;
+			/** Example usage */
+			example?: string;
+			/** Permissions required to use the command */
+			permissions?: string | string[];
+		}
 	}
 }
 
@@ -85,7 +106,7 @@ declare namespace Database {
 			/** The server's prefix */
 			prefix: string;
 			/** Should the bot respond to @ mentions */
-			mentionPrefix?: boolean;
+			//mentionPrefix?: boolean;
 			/** Should users be DM'd when they receive an infraction */
 			infNotify: boolean;
 			/** Roles */
