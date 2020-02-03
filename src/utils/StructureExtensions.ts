@@ -1,7 +1,6 @@
 import { Guild, Structures } from "discord.js";
 import Client from "./classes/Client";
 import { Database } from "./types";
-import GuildDB = Database.GuildDB;
 
 Structures.extend("GuildMember", (GM) => {
 	return class extends GM {
@@ -12,7 +11,22 @@ Structures.extend("GuildMember", (GM) => {
 			this._client = client;
 		}
 
-		get db (): Promise<any> {
+		get db (): Promise<Database.User> {
+			return this._client.db.users.findOne({ id: this.id });
+		}
+	};
+});
+
+Structures.extend("User", (User) => {
+	return class extends User {
+		_client: Client;
+
+		constructor (client: Client, data: object) {
+			super(client, data);
+			this._client = client;
+		}
+
+		get db (): Promise<Database.User> {
 			return this._client.db.users.findOne({ id: this.id });
 		}
 	};
@@ -27,7 +41,7 @@ Structures.extend("Guild", (Guild) => {
 			this._client = client;
 		}
 
-		get db (): Promise<GuildDB> {
+		get db (): Promise<Database.GuildDB> {
 			return this._client.db.guilds.findOne({ id: this.id });
 		}
 	};

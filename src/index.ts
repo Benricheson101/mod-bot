@@ -1,21 +1,28 @@
 import Client from "./utils/classes/Client";
-import { Level } from "verborum/dist";
-import { readdirSync, promises, PathLike } from "fs";
+import { PathLike, promises, readdirSync } from "fs";
 import { Collection } from "discord.js";
 import { Command } from "./utils/types";
-import { resolve } from "path";
+import { resolve, basename } from "path";
+import { admins } from "./utils/constants";
+import "./utils/StructureExtensions";
 
-require("./utils/StructureExtensions");
 const client: Client = new Client({
 	disableEveryone: true,
 	defaultColor: "#42aaf5",
-	owners: ["255834596766253057"],
+	owners: admins,
 	loggerOps: {
 		name: "mod-bot",
-		logLevel: 4,
+		levels: [0, 1, 2, 3],
 		enableLogs: true,
 		logDirectory: "build/utils/logs",
-		logFormat: "{{h12}} [{{clrst}}{{lvl}}{{clrend}}] {{name}}: {{clrst}}{{msg}}{{clrend}}"
+		format: "{{h12}} [{{clrst}}{{lvl}}{{clrend}}] {{name}}: {{clrst}}{{msg}}{{clrend}}",
+		colorScheme: {
+			useKeywords: true,
+			info: "seagreen",
+			warning: "khaki",
+			error: "firebrick",
+			debug: "steelblue"
+		}
 	},
 	databaseOps: {
 		url: process.env.MONGO,
@@ -31,8 +38,8 @@ client
 	.db
 	.connect()
 	.then(() => client.log.debug("Connected to the database."))
-	.catch((err) => {
-		client.log.error(err);
+	.catch((err: Error) => {
+		client.log.error(err.stack);
 	});
 
 // recursive command loading
@@ -43,7 +50,7 @@ client.commands = new Collection();
 		if (!file.endsWith(".js")) continue;
 		let cmd: Command.Command = require(file);
 		client.commands.set(cmd.config.name, cmd);
-		client.log.debug("[C] Successfully loaded", file);
+		client.log.debug("[C] Loaded", basename(file));
 	}
 })();
 
@@ -81,4 +88,3 @@ client.login(process.env.TOKEN)
 	.catch((err: Error) => {
 		client.log.error(err.stack);
 	});
-

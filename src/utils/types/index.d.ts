@@ -26,7 +26,19 @@ declare module "discord.js" {
 	/** Guild structure */
 	export interface Guild {
 		/** The database */
-		db;
+		db: Promise<Database.GuildDB>;
+	}
+
+	/** GuildMember structure */
+	export interface GuildMember {
+		/** The GuildMember's database record */
+		db: Promise<Database.User>;
+	}
+
+	/** User structure */
+	export interface User {
+		/** The user's database record */
+		db: Promise<Database.User>;
 	}
 }
 
@@ -38,9 +50,9 @@ declare module "verborum/dist/utils/interfaces" {
 		/** The name of the logger */
 		name?: string;
 		/** The log level */
-		logLevel?: Level;
+		levels?: Level[];
 		/** The format to use for logs */
-		logFormat?: string;
+		format?: string;
 	}
 }
 
@@ -50,6 +62,7 @@ declare namespace Command {
 	 */
 	export interface Command {
 		config: CommandOptions;
+
 		constructor (config: CommandOptions): void;
 
 		/**
@@ -80,6 +93,8 @@ declare namespace Command {
 			example?: string;
 			/** Permissions required to use the command */
 			permissions?: string | string[];
+			/** Should the command be hidden from the help command/command list */
+			hidden?: boolean;
 		}
 	}
 }
@@ -170,6 +185,13 @@ declare namespace Database {
 		/** Auto-assigned ID */
 		id?: number;
 	}
+
+	/** User/GuildMember */
+	export interface User {
+		/** The user's custom acknowledgement */
+		acknowledgement?: string;
+	}
+
 }
 
 declare namespace Infraction {

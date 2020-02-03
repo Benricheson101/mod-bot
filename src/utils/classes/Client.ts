@@ -49,9 +49,6 @@ export default class extends Client {
 		let ops: Config = this.options.loggerOps;
 		let name: string = "logs";
 		if (ops.name) name = ops.name;
-		let logger: Logger = new Logger(name, ops);
-		if (ops.logLevel) logger.level = ops.logLevel;
-		if (ops.logFormat) logger.format = ops.logFormat;
-		return logger;
+		return new Logger(name, ops);
 	}
 }
