@@ -11,6 +11,7 @@ export = {
 	},
 
 	async run (client, message, args) {
+		//todo: finish and make this actually work
 		let subCmd = args.shift();
 		let param = args.join(" ").split("|").map((p) => p.trim());
 		switch (subCmd) {

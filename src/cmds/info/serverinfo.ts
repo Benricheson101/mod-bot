@@ -49,6 +49,8 @@ export = {
 		`;
 
 		let otherInfo: string = `
+		**Boost Level**: ${g.premiumTier ?? 0}
+		**Boosts**: ${g.premiumSubscriptionCount ?? 0} (${g.members.cache.filter((gm) => gm.premiumSince !== null).size} members boosting)
 		**Features**: ${g.features.map((f) => f.replace(/_/g, " ")).join(", ") || "none"}
 		**Infractions**: ${guild.infractions.length}
 		**Custom Commands**: ${guild.commands.length}
