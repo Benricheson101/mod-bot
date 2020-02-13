@@ -4,22 +4,23 @@
   "description": "Discord moderation bot",
   "main": "build/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tscpaths -p tsconfig.json -s ./src -o ./build",
     "start": "node build/index.js"
   },
   "author": "Ben Richeson",
   "license": "MIT",
   "dependencies": {
-    "discord.js": "github:discordjs/discord.js",
+    "discord.js": "discordjs/discord.js",
     "moment": "^2.24.0",
-    "mongodb": "^3.5.2",
+    "mongodb": "^3.5.3",
     "node-fetch": "^2.6.0",
-    "verborum": "^1.6.0"
+    "verborum": "^1.6.1"
   },
   "devDependencies": {
-    "typescript": "^3.7.5",
-    "@types/mongodb": "^3.3.15",
-    "@types/node": "^13.7.0",
-    "@types/node-fetch": "^2.5.4"
+    "@types/mongodb": "^3.3.16",
+    "@types/node": "^13.7.1",
+    "@types/node-fetch": "^2.5.4",
+    "tscpaths": "^0.0.9",
+    "typescript": "^3.7.5"
   }
 }

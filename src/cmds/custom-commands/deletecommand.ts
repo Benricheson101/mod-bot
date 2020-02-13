@@ -1,6 +1,6 @@
-import { Command as C, Database as D } from "../../utils/types";
-import CustomCommand from "../../utils/classes/CustomCommand";
-import { errors } from "../../utils/constants";
+import { Command as C, Database as D } from "@types";
+import CustomCommand from "@classes/CustomCommand";
+import { errors } from "@utils/constants";
 
 export = {
 	config: {
@@ -9,7 +9,7 @@ export = {
 		role: "moderator",
 		channelType: "text",
 		help: {
-			description: "Delete a custom command",
+			description: "Delete a custom command"
 
 		}
 	},

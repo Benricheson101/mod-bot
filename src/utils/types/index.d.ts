@@ -2,8 +2,8 @@ import "discord.js";
 import "verborum";
 import { Config } from "verborum/dist/utils/interfaces";
 import { Level } from "verborum/dist";
-import { Message, MessageEmbed, Snowflake } from "discord.js";
-import Client from "../classes/Client";
+import { Guild, Message, MessageEmbed, Snowflake, User } from "discord.js";
+import Client from "@classes/Client";
 import { MongoClientOptions } from "mongodb";
 
 declare module "discord.js" {
@@ -83,6 +83,8 @@ declare namespace Command {
 		ownerOnly?: boolean;
 		/** Require a preconfigured role use the command */
 		role?: "moderator" | "admin";
+		/** Enable or disable the command */
+		disabled?: boolean;
 		/** Stuff for the help command */
 		help?: {
 			/** What the command does */
@@ -120,7 +122,7 @@ declare namespace Database {
 		config: {
 			/** The server's prefix */
 			prefix: string;
-			/** Should the bot respond to @ mentions */
+			// /** Should the bot respond to @ mentions */
 			//mentionPrefix?: boolean;
 			/** Should users be DM'd when they receive an infraction */
 			infNotify: boolean;
@@ -131,6 +133,7 @@ declare namespace Database {
 				/** Users with these roles have access to higher-level commands (tbd) */
 				admin?: Snowflake[];
 			}
+			enabledLogs: Logs[];
 		}
 		/** Infractions */
 		infractions: Infraction[];
@@ -192,6 +195,11 @@ declare namespace Database {
 		acknowledgement?: string;
 	}
 
+	/** Logs */
+	export interface Logs {
+		event: string;
+		channel: Snowflake;
+	}
 }
 
 declare namespace Infraction {
@@ -200,19 +208,20 @@ declare namespace Infraction {
 
 		/**
 		 * Create a new infraction
-		 * @param {Snowflake} guild - The guildId
+		 * @param {Guild} guild - The guildId
+		 * @param {User} user - The user that the infraction is being added to
 		 * @param {Database.Infraction} infraction - The infraction
 		 * @return {Promise<Database.Infraction>} - The saved infraction
 		 */
-		create (guild: Snowflake, infraction: Database.Infraction): Promise<Database.Infraction>;
+		create (guild: Guild, user: User, infraction: Database.Infraction): Promise<Database.Infraction>;
 
 		/**
 		 * Delete an infraction
-		 * @param {Snowflake} guild - The guildId
+		 * @param {Guild} guild - The guildId
 		 * @param {Database.Infraction | number} infraction - The infractionId
 		 * @return {object}
 		 */
-		delete (guild: Snowflake, infraction: number): object;
+		delete (guild: Guild, infraction: number): object;
 
 		/**
 		 * Get all of the infractions for a guild.
@@ -225,11 +234,12 @@ declare namespace Infraction {
 
 		/**
 		 * Generate an infraction embed
-		 * @param {Message} message - The message object
 		 * @param {Database.Infraction} infraction - The infraction
 		 * @return {MessageEmbed} - The embed object
 		 */
-		generateInfEmbed (message: Message, infraction: Database.Infraction): Promise<MessageEmbed>;
+		generateInfEmbed (infraction: Database.Infraction): Promise<MessageEmbed>;
+
+		update (guild, infraction, changes): object;
 	}
 }
 

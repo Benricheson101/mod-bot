@@ -1,5 +1,5 @@
-import { Command as C, Database as D } from "../../utils/types";
-import { errors } from "../../utils/constants";
+import { Command as C, Database as D } from "@types";
+import { errors } from "@utils/constants";
 import { GuildMember, Util } from "discord.js";
 
 export = {
@@ -37,13 +37,13 @@ export = {
 				message.channel.send(errors.generic);
 			});
 
-		await client.infractions.create(message.guild.id, <D.Infraction>{
+		await client.infractions.create(message.guild, member.user, {
 			date: new Date(),
 			moderator: message.author.id,
 			user: member.id,
 			type: "kick",
 			reason: reason
-		});
+		} as D.Infraction);
 
 		await message.channel.send(`:white_check_mark: Kicked \`${member.user.tag}\` (\`${member.id}\`) \n> Moderator: \`${message.author.tag}\` (\`${message.author.id}\`)${reason ? `\n> Reason: \`${reason}\`` : ""}`);
 	}

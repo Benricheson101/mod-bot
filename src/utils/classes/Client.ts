@@ -36,7 +36,7 @@ export default class extends Client {
 	 * @return {User | Promise<User>}
 	 */
 	async getUser (user: Snowflake): Promise<User> {
-		return this.users.find((u) => u.id === user)
+		return this.users.cache.find((u) => u.id === user)
 			|| await this.users.fetch(user)
 			|| null;
 	}

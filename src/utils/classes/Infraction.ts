@@ -1,20 +1,23 @@
-import { Database as D, Infraction } from "../types";
+import { Database as D, Infraction } from "@types";
 import Client from "./Client";
 import { UpdateWriteOpResult } from "mongodb";
-import { Message, MessageEmbed } from "discord.js";
+import { MessageEmbed } from "discord.js";
 
 export default class implements Infraction.Infraction {
 	constructor (private _client: Client) {
 	}
 
-	async create (guild, inf) {
-		let guildDb = await this._client.db.guilds.findOne({ id: guild });
+	async create (guild, user, inf) {
+		let guildDb = await this._client.db.guilds.findOne({ id: guild.id });
 		let infId = guildDb.infId += 1;
 		inf.id = infId;
-		await this._client.db.guilds.updateOne({ id: guild }, {
+		await this._client.db.guilds.updateOne({ id: guild.id }, {
 			$push: { infractions: inf },
 			$set: { infId: infId }
 		});
+
+		this._client.emit("infCreate", guild, user, inf);
+
 		return inf;
 	}
 
@@ -23,7 +26,7 @@ export default class implements Infraction.Infraction {
 			let { infractions } = await this._client.db.guilds.findOne({
 				id: guild
 			});
-			return infractions.find((inf) => inf.id === +infId);
+			return infractions.find((inf: D.Infraction) => inf.id === +infId);
 		}
 		if (!infId) {
 			let inf = await this._client.db.guilds.find({ id: guild });
@@ -37,21 +40,42 @@ export default class implements Infraction.Infraction {
 	}
 
 	async delete (guild, infraction) {
-		let inf = this.getGuild(guild, infraction);
+		let inf: Promise<D.Infraction> = await this.getGuild(guild.id, infraction);
 		if (!inf) return;
+		let user = await this._client.getUser((await inf).user);
 		let result: UpdateWriteOpResult = await this._client.db.guilds.updateOne({
-			id: guild,
+			id: guild.id,
 			"infractions.id": +infraction
 		}, {
 			$pull: { infractions: { id: +infraction } }
 		});
+
+		this._client.emit("infDelete", guild, user, inf);
+
 		return {
 			result: result,
 			oldInf: inf
 		};
 	}
 
-	async generateInfEmbed (message: Message, infraction: D.Infraction): Promise<MessageEmbed> {
+	async update (guild, infraction, changes) {
+		let inf: D.Infraction = await this.getGuild(guild, infraction);
+		if (!inf) return;
+		let newInf: D.Infraction = { ...inf, ...changes };
+		let result: UpdateWriteOpResult = await this._client
+			.db
+			.guilds
+			.replaceOne({ id: guild }, { $set: {
+
+				} });
+		return {
+			result: result,
+			oldInf: inf,
+			newInf: newInf
+		};
+	}
+
+	async generateInfEmbed (infraction: D.Infraction): Promise<MessageEmbed> {
 		return this._client.defaultEmbed
 			.setDescription(`**Moderator**: ${(await this._client.getUser(infraction.moderator)).tag} (${infraction.moderator})\n**Reason**: ${infraction.reason || "no reason provided"}`)
 			.setTimestamp(infraction.date)

@@ -1,12 +1,12 @@
-import { Command as C, Database as D } from "../../utils/types";
+import { Command as C, Database as D } from "@types";
 import { GuildMember } from "discord.js";
 
 export = {
 	config: {
 		name: "warn",
 		aliases: ["warning", "add-inf"],
-		channelType: "text"
-		//role: "moderator"
+		channelType: "text",
+		role: "moderator"
 	},
 
 	async run (client, message, args) {
@@ -29,13 +29,13 @@ export = {
 			}
 		} else notified = "Infraction notifications are disabled for this server.";
 
-		await client.infractions.create(message.guild.id, <D.Infraction>{
+		await client.infractions.create(message.guild, member.user, {
 			date: new Date(),
 			moderator: message.author.id,
 			user: member.id,
 			type: "warn",
 			reason: reason
-		});
+		} as D.Infraction);
 
 		await message.channel.send(`\`[${db.infId + 1}]\` Warned \`${member.user.tag}\` (\`${member.id}\`) \n> Moderator: \`${message.author.tag}\` (\`${message.author.id}\`)${reason ? `\n> Reason: \`${reason}\`` : ""}\n> Notified: ${notified}`);
 	}

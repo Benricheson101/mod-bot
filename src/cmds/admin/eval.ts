@@ -1,4 +1,4 @@
-import { Command as C } from "../../utils/types";
+import { Command as C } from "@types";
 import { MessageEmbed } from "discord.js";
 
 export = {
@@ -10,7 +10,7 @@ export = {
 
 	async run (client, message, args) {
 		// todo: make less bad
-		if (!args) return message.channel.send("");
+		if (!args) return message.channel.send("no");
 
 		/**
 		 * "Clean" text before returning it with eval.
@@ -22,8 +22,7 @@ export = {
 				text = text.substring(0, 1000);
 				return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
 			}
-			text = text.substring(0, 1000);
-			return text;
+			return text
 		}
 
 		try {
@@ -35,22 +34,18 @@ export = {
 
 			// TODO: make this shorter
 			let successEmbed = new MessageEmbed()
-				.setAuthor(message.author.username, message.author.icon_url)
-				.setTitle("JavaScript Eval Success!")
 				.setColor("GREEN")
 				.setDescription(`\`\`\`js\n${args.join(" ")}\`\`\``)
-				.addField("Result:", `\`\`\`xl\n${clean(evaled)}\`\`\``)
+				.addField("📤 Result:", `\`\`\`js\n${clean(evaled)}\`\`\``)
 				.setTimestamp();
 			await message.channel.send({ embed: successEmbed });
 
 		} catch (err) {
 			let errorEmbed = new MessageEmbed()
-				.setAuthor(message.author.username, message.author.icon_url)
-				.setTitle("JavaScript Eval Error!")
 				.setColor("DARK_RED")
 				.setDescription(`\`\`\`js\n${args.join(" ")}\`\`\``)
-				.addField("Error:", `\`\`\`js\n${clean(err.stack)}\`\`\``)
 				.setTimestamp();
+			clean(err.stack) ? errorEmbed.addField(":x: Error:", `\`\`\`js\n${clean(err.stack)}\`\`\``) : null;
 			await message.channel.send({ embed: errorEmbed });
 		}
 	}

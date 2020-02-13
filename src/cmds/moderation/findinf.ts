@@ -1,5 +1,5 @@
-import { Command as C, Database as D } from "../../utils/types";
-import { errors } from "../../utils/constants";
+import { Command as C, Database as D } from "@types";
+import { errors } from "@utils/constants";
 import { GuildMember, MessageEmbed, Snowflake } from "discord.js";
 
 export = {

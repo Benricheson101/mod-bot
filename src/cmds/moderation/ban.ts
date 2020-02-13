@@ -1,5 +1,5 @@
-import { Command as C, Database as D } from "../../utils/types";
-import { errors } from "../../utils/constants";
+import { Command as C, Database as D } from "@types";
+import { errors } from "@utils/constants";
 import { GuildMember } from "discord.js";
 
 export = {
@@ -37,7 +37,7 @@ export = {
 				message.channel.send(errors.generic);
 			});
 
-		await client.infractions.create(message.guild.id, {
+		await client.infractions.create(message.guild, member.user, {
 			date: new Date(),
 			moderator: message.author.id,
 			user: member.id,

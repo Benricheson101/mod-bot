@@ -1,5 +1,5 @@
 import { Command as C } from "../../utils/types/index";
-import { Embed } from "../../utils/classes/Embed";
+import { Embed } from "@classes/Embed";
 
 export = {
 	config: {

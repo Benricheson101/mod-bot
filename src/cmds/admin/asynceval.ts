@@ -1,4 +1,4 @@
-import { Command as C } from "../../utils/types";
+import { Command as C } from "@types";
 import { MessageEmbed } from "discord.js";
 
 export = {
@@ -22,7 +22,6 @@ export = {
 				text = text.substring(0, 1000);
 				return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
 			}
-			text = text.substring(0, 1000);
 			return text;
 		}
 

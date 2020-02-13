@@ -1,0 +1,14 @@
+import Client from "@utils/classes/Client";
+import { Database as D } from "@utils/types";
+import { Logs } from "@utils/classes/Logs";
+import { Channel, Guild, Snowflake, TextChannel, User } from "discord.js";
+
+export = async (client: Client, guild: Guild, user: User | null, infraction: D.Infraction) => {
+	let guildDb: D.GuildDB = await guild.db;
+	let logChannel: D.Logs = guildDb.config.enabledLogs.find((g: D.Logs) => g.event === "infCreate");
+	if (logChannel) {
+		let ch: Channel = client.channels.cache.get(logChannel.channel);
+		if (!ch) return;
+		(ch as TextChannel).send({ embed: await Logs.infLogEmbed(client, infraction, "added") });
+	} else console.log("This server has no infCreate channel");
+}

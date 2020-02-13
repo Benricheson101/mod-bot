@@ -1,5 +1,5 @@
 import Client from "./Client";
-import { CustomCommand as CC, Database as D } from "../types";
+import { CustomCommand as CC, Database as D } from "@types";
 
 export default class implements CC.CustomCommand {
 	constructor (private _client: Client) {

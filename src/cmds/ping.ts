@@ -1,4 +1,4 @@
-import { Command as C } from "../utils/types";
+import { Command as C } from "@types";
 import { Message } from "discord.js";
 
 export = {

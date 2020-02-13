@@ -1,4 +1,4 @@
-import { Command as C } from "../../utils/types";
+import { Command as C, Database as D } from "@types";
 import { GuildMember, MessageEmbed, User } from "discord.js";
 import * as moment from "moment";
 
@@ -20,13 +20,6 @@ export = {
 		}
 		if (!user) return message.channel.send(":x: I could not find that user");
 
-		let embed: MessageEmbed = client.defaultEmbed
-			.setTitle(`User Info`)
-			.setAuthor("Requested by: " + message.author.tag, message.author.displayAvatarURL({
-				format: "png",
-				dynamic: true
-			}))
-			.setThumbnail(user.displayAvatarURL({ format: "png", dynamic: true }));
 
 		let userInfo: string = `**User**: ${user.tag}
 		**ID**: ${user.id}
@@ -40,18 +33,26 @@ export = {
 			**Emoji**: ${user.presence.activities[0].emoji ? user.presence.activities[0].emoji.name : "None"}`
 			: "**Presence**: None"}`;
 
-		embed.addField(
-			"User",
-			userInfo.replace(/	/g, "")
-		);
+		let embed: MessageEmbed = client.defaultEmbed
+			.setTitle(`User Info`)
+			.setAuthor("Requested by: " + message.author.tag, message.author.displayAvatarURL({
+				format: "png",
+				dynamic: true
+			}))
+			.setThumbnail(user.displayAvatarURL({ format: "png", dynamic: true }));
+		embed.addField("User", userInfo.replace(/	/g, ""));
 
-		let GM: GuildMember = message.guild.members.find((m: GuildMember) => m.id === user.id);
+		let GM: GuildMember = message.guild.members.cache.find((m: GuildMember) => m.id === user.id);
 		if (GM) {
-			let roles = GM.roles.array().sort((a, b) => b.position - a.position);
+			let roles = GM
+				.roles
+				.cache
+				.array()
+				.sort((a, b) => b.position - a.position);
 
 			let GMInfo: string = `**Joined**: ${moment(GM.joinedAt).fromNow()} (${moment(GM.joinedAt).format("YYYY-MM-DD")})
 			**Last Message**: ${GM.lastMessage ? moment(GM.lastMessage.createdTimestamp).fromNow() : "None"}
-			**Total Roles**: ${GM.roles.size}
+			**Total Roles**: ${GM.roles.cache.size}
 			**Nickname**: ${GM.nickname ?? "None"}`;
 
 			embed.addField(

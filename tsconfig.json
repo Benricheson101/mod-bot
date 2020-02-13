@@ -1,9 +1,16 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es6",
+    "target": "ES2020",
     "outDir": "./build",
-    "sourceMap": false
+    "sourceMap": false,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["src/*"],
+      "@utils/*": ["src/utils/*"],
+      "@types": ["src/utils/types"],
+      "@classes/*": ["src/utils/classes/*"]
+    }
   },
   "typeRoots": [
     "./node_modules/@types",

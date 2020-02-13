@@ -1,6 +1,6 @@
 import Client from "./Client";
 import { MessageEmbed, MessageReaction, ReactionCollector, User } from "discord.js";
-import { Embed as E } from "../types";
+import { Embed as E } from "@types";
 
 export class Embed implements E.Embed {
 	_client: Client;

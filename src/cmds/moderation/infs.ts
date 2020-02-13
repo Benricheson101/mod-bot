@@ -1,7 +1,7 @@
-import { Command as C, Database } from "../../utils/types";
-import { errors } from "../../utils/constants";
+import { Command as C, Database } from "@types";
+import { errors } from "@utils/constants";
 import { MessageEmbed, User } from "discord.js";
-import { Embed } from "../../utils/classes/Embed";
+import { Embed } from "@classes/Embed";
 
 export = {
 	config: {
@@ -23,7 +23,7 @@ export = {
 				if (!args[0]) return message.channel.send(errors.usage);
 				let user: User = message.mentions.users.first() || await client.getUser(args[0]);
 				if (!user) return message.channel.send(":x: I could not find that user");
-				let userInfs: Database.Infraction[] = guild.infractions.filter((inf) => inf.user === user.id);
+				let userInfs: Database.Infraction[] = guild.infractions.filter((inf: Database.Infraction) => inf.user === user.id);
 				if (!userInfs) return message.channel.send(":x: That user doesn't have any infractions");
 				await generateEmbedArr(userInfs, { start: args[1], perEmbed: 4 });
 				break;

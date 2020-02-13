@@ -1,14 +1,14 @@
-import Client from "./utils/classes/Client";
+import Client from "@classes/Client";
 import { PathLike, promises, readdirSync } from "fs";
 import { Collection } from "discord.js";
-import { Command } from "./utils/types";
+import { Command } from "@types";
 import { resolve, basename } from "path";
-import { admins } from "./utils/constants";
-import "./utils/StructureExtensions";
+import { admins, colors } from "@utils/constants";
+import "@utils/StructureExtensions";
 
 const client: Client = new Client({
 	disableEveryone: true,
-	defaultColor: "#42aaf5",
+	defaultColor: colors.default,
 	owners: admins,
 	loggerOps: {
 		name: "mod-bot",
@@ -84,7 +84,12 @@ if (!eventFiles || eventFiles.length < 1) {
 	client.log.info(`Loaded ${eventFiles.length} event${eventFiles.length === 1 ? "" : "s"}.`);
 }
 
+client.on("infDelete", (guild, user, infraction) => {
+	console.log(guild.name, user.tag ?? "[user not found]", infraction);
+});
+
 client.login(process.env.TOKEN)
 	.catch((err: Error) => {
 		client.log.error(err.stack);
 	});
+
