@@ -1,5 +1,5 @@
 import { Command as C, Database as D } from "@types";
-import { Guild } from "discord.js";
+import { Guild, Role } from "discord.js";
 import * as moment from "moment";
 
 export = {
@@ -22,16 +22,22 @@ export = {
 
 		let guild: D.GuildDB = await client.db.guilds.findOne({ id: g.id });
 
-		let presences: Presences = {};
+		let presences: Statuses = {};
 		g.members.cache.forEach(({ presence: { status } }) => {
 			presences[status] = g.members.cache.filter(({ presence: { status: st } }) => st === status).size;
 		});
-		let online: number = (presences.online + presences.dnd) / g.memberCount;
+		let channels: Channels = {};
+		g.channels.cache.forEach(({ type }) => {
+			channels[type] = g.channels.cache.filter(({ type: t }) => t === type).size;
+		});
+		let emojis = g.emojis.cache;
 
 		let guildInfo: string = `
 		**Name**: ${g.name}
 		**Owner**: ${g.owner.user.tag} (${g.owner.id})
 		**Created**: ${moment(g.createdAt).fromNow()} (${moment(g.createdAt).format("YYYY-MM-DD")})
+		**Region**: ${g.region}
+		**Emojis**: ${emojis.size} (${emojis.filter((e) => e.animated).size ?? 0} animated, ${emojis.filter((e) => !e.animated).size ?? 0} still)
 		`;
 
 		let members: string = `
@@ -41,11 +47,21 @@ export = {
 		`;
 
 		let presenceInfo: string = `
-		**Online/Total**: ${presences.online + presences.dnd}/${g.memberCount} (${Math.round((online * 100))}% online)
+		**Online/Total**: ${presences.online + presences.dnd}/${g.memberCount} (${Math.round((((presences.online + presences.dnd) / g.memberCount) * 100))}% online)
 		**Online**: ${presences.online ?? 0}
 		**DND**: ${presences.dnd ?? 0}
 		**Idle**: ${presences.idle ?? 0}
 		**Offline**: ${presences.offline ?? 0}
+		`;
+
+
+		let channelInfo: string = `
+		**Total Channels**: ${(channels.text ?? 0) + (channels.voice ?? 0) + (channels.news ?? 0) + (channels.store ?? 0) ?? 0}
+		**Categories**: ${channels.category ?? 0}
+		**Text Channels**: ${channels.text ?? 0}
+		**Voice Channels**: ${channels.voice ?? 0}
+		**Other Channels**: ${(channels.store ?? 0) + (channels.news ?? 0) + (channels.unknown ?? 0) ?? 0}
+		**System Channel**: ${g.systemChannel ?? "none"}
 		`;
 
 		let otherInfo: string = `
@@ -56,19 +72,30 @@ export = {
 		**Custom Commands**: ${guild.commands.length}
 		`;
 
-		let roles = g
+		let roles: Role[] = g
 			.roles
 			.cache
 			.array()
 			.filter((r) => !r.managed)
 			.sort((a, b) => b.position - a.position);
+		let roleList: Role[] = [];
+
+		for (let role of roles) {
+			if ((roleList.join("\n").length + role.toString().length) < 965) roleList.push(role);
+			else {
+				// @ts-ignore
+				roleList.push(`${roles.length - roleList.length} roles have been omitted due to embed character limits`);
+				break;
+			}
+		}
 
 		let embed = client.defaultEmbed
 			.addField("Guild", guildInfo.replace(/	/g, ""))
 			.addField("Members", members.replace(/	/g, ""))
 			.addField("Presences", presenceInfo.replace(/	/g, ""))
+			.addField("Channels", channelInfo.replace(/	/g, ""))
 			.addField("Other", otherInfo.replace(/	/g, ""))
-			.addField(`Roles (${roles.length})`, roles)
+			.addField(`Roles (${roles.length})`, roleList.join("\n"))
 			.setThumbnail(g.iconURL({ format: "png", dynamic: true }))
 			.setFooter(`ID: ${g.id}`)
 			.setTimestamp();
@@ -77,9 +104,18 @@ export = {
 	}
 } as C.Command;
 
-interface Presences {
+interface Statuses {
 	online?: number;
 	dnd?: number;
 	idle?: number;
 	offline?: number;
+}
+
+interface Channels {
+	category?: number;
+	voice?: number;
+	text?: number;
+	news?: number;
+	store?: number;
+	unknown?: number;
 }

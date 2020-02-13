@@ -282,15 +282,27 @@ declare namespace CustomCommand {
 
 declare namespace Embed {
 	export class Embed {
+		/**
+		 * Send a paginated message
+		 * @param {Message} message - The message object
+		 * @param {string[] | MessageEmbed[]} content - What each page should be
+		 * @param {number} [time] - How long the pagination should be active
+		 * @param {E.PageEmojis} [emojis] - What emojis to add to the message. Reacts in the order of the keys in the object
+		 * @param {E.PageEmojis.left} emojis="⬅" - The emoji to display the previous page
+		 * @param {E.PageEmojis.right} emojis="➡" - The emoji to display the next page
+		 * @param {E.PageEmojis.end} emojis="⏹" - The emoji that will delete the message
+		 * @param {number} [startPage=0] - Which page to start on
+		 * @returns {Promise<void>}
+		 */
 		static pages (message: Message, content: any[], time?: number, emojis?: PageEmojis, startPage?: number): Promise<any>;
 	}
 
-	interface PageEmojis {
+	export interface PageEmojis {
 		/** Left emoji */
 		left: string;
 		/** Right emoji */
 		right: string;
-
+		/** End emoji */
 		end: string;
 	}
 
