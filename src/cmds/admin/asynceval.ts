@@ -35,22 +35,18 @@ export = {
 
 			// TODO: make this shorter
 			let successEmbed = new MessageEmbed()
-				.setAuthor(message.author.username, message.author.icon_url)
-				.setTitle("JavaScript Eval Success!")
 				.setColor("GREEN")
 				.setDescription(`\`\`\`js\n${args.join(" ")}\`\`\``)
-				.addField("Result:", `\`\`\`xl\n${clean(evaled)}\`\`\``)
+				.addField("📤 Result:", `\`\`\`js\n${clean(evaled)}\`\`\``)
 				.setTimestamp();
 			await message.channel.send({ embed: successEmbed });
 
 		} catch (err) {
 			let errorEmbed = new MessageEmbed()
-				.setAuthor(message.author.username, message.author.icon_url)
-				.setTitle("JavaScript Eval Error!")
 				.setColor("DARK_RED")
 				.setDescription(`\`\`\`js\n${args.join(" ")}\`\`\``)
-				.addField("Error:", `\`\`\`js\n${clean(err.stack)}\`\`\``)
 				.setTimestamp();
+			clean(err.stack) ? errorEmbed.addField(":x: Error:", `\`\`\`js\n${clean(err.stack)}\`\`\``) : null;
 			await message.channel.send({ embed: errorEmbed });
 		}
 	}

@@ -31,7 +31,13 @@ export = async (client: Client, message: Message): Promise<Message> => {
 		if (message.channel.type === "text" && guild.commands.length > 0) {
 			let checkCmd = guild.commands.find((c) => c.name === command);
 			if (checkCmd) {
-				return message.channel.send(checkCmd.message);
+				let m: string = checkCmd.message
+					.replace(/{{servername}}/gi, message.guild.name)
+					.replace(/{{serverid}}/gi, message.guild.id)
+					.replace(/{{owner}}/gi, message.guild.owner.user.tag)
+					.replace(/{{author}}/gi, message.author.tag)
+					.replace(/{{authorping}}/gi, message.author.toString());
+				return message.channel.send(m);
 			} else return;
 		} else return;
 	}

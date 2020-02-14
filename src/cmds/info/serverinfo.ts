@@ -35,7 +35,7 @@ export = {
 		let guildInfo: string = `
 		**Name**: ${g.name}
 		**Owner**: ${g.owner.user.tag} (${g.owner.id})
-		**Created**: ${moment(g.createdAt).fromNow()} (${moment(g.createdAt).format("YYYY-MM-DD")})
+		**Created**: ${moment(g.createdAt).fromNow()} (${moment(g.createdAt).format("YYYY-MM-DD hh:mm")} EST)
 		**Region**: ${g.region}
 		**Emojis**: ${emojis.size} (${emojis.filter((e) => e.animated).size ?? 0} animated, ${emojis.filter((e) => !e.animated).size ?? 0} still)
 		`;
