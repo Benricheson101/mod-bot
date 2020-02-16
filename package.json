@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Discord moderation bot",
   "main": "build/index.js",
+  "repository": "https://github.com/benricheson101/mod-bot",
   "scripts": {
     "build": "tscpaths -p tsconfig.json -s ./src -o ./build",
     "start": "node build/index.js"

@@ -24,7 +24,7 @@ export = {
 		let userInfo: string = `**User**: ${user.tag}
 		**ID**: ${user.id}
 		**Bot**: ${user.bot}
-		**Created**: ${moment(user.createdAt).fromNow()} (${moment(user.createdAt).format("YYYY-MM-DD")})
+		**Created**: ${moment(user.createdAt).fromNow()} (${moment(user.createdAt).format("YYYY-MM-DD hh:mm")})
 		**Avatar**: [Avatar](${user.displayAvatarURL({ format: "png", dynamic: true })})
 		**Status**: ${user.presence.status}
 		${user.presence.activities[0] ?
@@ -34,11 +34,6 @@ export = {
 			: "**Presence**: None"}`;
 
 		let embed: MessageEmbed = client.defaultEmbed
-			.setTitle(`User Info`)
-			.setAuthor("Requested by: " + message.author.tag, message.author.displayAvatarURL({
-				format: "png",
-				dynamic: true
-			}))
 			.setThumbnail(user.displayAvatarURL({ format: "png", dynamic: true }));
 		embed.addField("User", userInfo.replace(/	/g, ""));
 

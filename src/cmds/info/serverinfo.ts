@@ -90,11 +90,11 @@ export = {
 		}
 
 		let embed = client.defaultEmbed
-			.addField("Guild", guildInfo.replace(/	/g, ""))
-			.addField("Members", members.replace(/	/g, ""))
-			.addField("Presences", presenceInfo.replace(/	/g, ""))
-			.addField("Channels", channelInfo.replace(/	/g, ""))
-			.addField("Other", otherInfo.replace(/	/g, ""))
+			.addField("Guild", guildInfo.replace(/\t+/g, ""))
+			.addField("Members", members.replace(/\t+/g, ""))
+			.addField("Presences", presenceInfo.replace(/\t+/g, ""))
+			.addField("Channels", channelInfo.replace(/\t+/g, ""))
+			.addField("Other", otherInfo.replace(/\t+/g, ""))
 			.addField(`Roles (${roles.length})`, roleList.join("\n"))
 			.setThumbnail(g.iconURL({ format: "png", dynamic: true }))
 			.setFooter(`ID: ${g.id}`)

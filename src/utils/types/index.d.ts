@@ -288,9 +288,9 @@ declare namespace Embed {
 		 * @param {string[] | MessageEmbed[]} content - What each page should be
 		 * @param {number} [time] - How long the pagination should be active
 		 * @param {E.PageEmojis} [emojis] - What emojis to add to the message. Reacts in the order of the keys in the object
-		 * @param {E.PageEmojis.left} emojis="⬅" - The emoji to display the previous page
-		 * @param {E.PageEmojis.right} emojis="➡" - The emoji to display the next page
-		 * @param {E.PageEmojis.end} emojis="⏹" - The emoji that will delete the message
+		 * @param {E.PageEmojis.left} emojis.left="⬅" - The emoji to display the previous page
+		 * @param {E.PageEmojis.right} emojis.right="➡" - The emoji to display the next page
+		 * @param {E.PageEmojis.end} emojis.end="⏹" - The emoji that will delete the message
 		 * @param {number} [startPage=0] - Which page to start on
 		 * @returns {Promise<void>}
 		 */
