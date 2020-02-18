@@ -28,16 +28,15 @@ export const defaultGuild = (guildId: Snowflake): D.GuildDB => {
 export const errors = {
 	generic: ":x: An error occurred. Please try again.",
 	usage: ":x: Incorrect usage.",
-	userPerms (permissions: PermissionString[]) {
+	userPerms (permissions: PermissionString[]): string {
 		return `:x: You do not have permission to use this command. You must have \`${permissions}\``;
 	},
-	botPerms (permissions: PermissionString[]) {
+	botPerms (permissions: PermissionString[]): string {
 		return `:x: I was not able to execute this command because I am missing the following permission${permissions.length === 1 ? "" : "s"}: \`${permissions}\``;
 	},
-	async genUsage ({ config: { name, help: { usage } } }: C.Command, { guild: { db } }: Message) {
-		let correctUsage = `Correct usage: \`${(await db).config.prefix ?? defaults.prefix + name} ${usage}\``;
+	async genUsage ({ config: { name, help: { usage } } }: C.Command, { guild: { db } }: Message): Promise<string> {
+		let correctUsage = `Correct usage: \`${(await db).config.prefix ?? defaults.prefix}${name} ${usage}\``;
 		return `:x: Incorrect usage. ${usage ? correctUsage : ""}`;
-
 	}
 };
 

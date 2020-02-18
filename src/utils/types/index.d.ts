@@ -63,7 +63,7 @@ declare namespace Command {
 	export interface Command {
 		config: CommandOptions;
 
-		constructor (config: CommandOptions): void;
+		//constructor (config: CommandOptions): void;
 
 		/**
 		 * The function to run, the actual command code
@@ -97,6 +97,8 @@ declare namespace Command {
 			permissions?: string | string[];
 			/** Should the command be hidden from the help command/command list */
 			hidden?: boolean;
+			/** Which category the command falls into */
+			category?: string;
 		}
 	}
 }
@@ -306,4 +308,24 @@ declare namespace Embed {
 		end: string;
 	}
 
+}
+
+declare namespace Util {
+	export class Util {
+		/**
+		 * Generate a confirmation message
+		 * @param {Message} message - The message object
+		 * @param {string} confirmationMsg - What the user is confirming
+		 * @param {Util.ConfirmationOptions} [options] - Options
+		 * @param {number} [options.time] - How long the function should wait for a response
+		 * @param {"accept" | "deny"} [options.timeEndAction] - What should happen when time runs out
+		 * @returns {Promise<boolean>}
+		 */
+		static confirmation (message: Message, confirmationMsg: string, options?: ConfirmationOptions): Promise<boolean>;
+	}
+
+	export interface ConfirmationOptions {
+		time?: number;
+		timeEndAction?: "accept" | "deny"
+	}
 }

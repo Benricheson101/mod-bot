@@ -1,4 +1,4 @@
-import { Client, ClientOptions, Collection, MessageEmbed, Snowflake, User } from "discord.js";
+import { Client, ClientOptions, Collection, Guild, GuildMember, MessageEmbed, Snowflake, User } from "discord.js";
 import { Database } from "./Database";
 import { Logger } from "verborum/dist";
 import { Config } from "verborum/dist/utils/interfaces";
@@ -33,7 +33,7 @@ export default class extends Client {
 	/**
 	 * Get a user
 	 * @param {Snowflake} user
-	 * @return {User | Promise<User>}
+	 * @return {Promise<User>}
 	 */
 	async getUser (user: Snowflake): Promise<User> {
 		return this.users.cache.find((u) => u.id === user)

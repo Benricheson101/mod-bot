@@ -110,3 +110,4 @@ dist
 build
 .idea
 /src/cmds/admin/test.ts
+/src/utils/sensitive.ts

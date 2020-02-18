@@ -4,9 +4,9 @@ import { User } from "discord.js";
 import * as moment from "moment";
 import { exec as e } from "child_process";
 import { promisify } from "util";
-import { freemem, platform, release, totalmem } from "os";
+import { platform, release } from "os";
 
-const { dependencies, devDependencies, repository, scripts } = require("~/../package.json");
+const { dependencies, devDependencies, repository } = require("~/../package.json");
 
 
 export = {
@@ -49,10 +49,15 @@ export = {
 		**DevDependencies (${Object.keys(devDependencies).length})**: \n\`\`\`json\n${JSON.stringify(devDependencies, null, 2)}\`\`\`
 		`;
 
+		let acknowledgements: string = `
+		**Animal Images**: [Chewey Bot API](https://chewey-bot.top/)
+		`;
+
 		let embed = client.defaultEmbed
 			.addField("Author", authorInfo.replace(/\t+/g, ""))
 			.addField("Bot", botInfo.replace(/\t+/g, ""))
-			.addField("Technical", technicalInfo.replace(/\t+/g, "")); // too much?
+			.addField("Technical", technicalInfo.replace(/\t+/g, "")) // too much?
+			.addField("Acknowledgements", acknowledgements.replace(/\t+/g, ""));
 		await message.channel.send({ embed: embed });
 	}
 } as C.Command;

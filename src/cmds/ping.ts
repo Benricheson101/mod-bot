@@ -7,7 +7,8 @@ export = {
 		aliases: [],
 		help: {
 			description: "Get the bot's ping",
-			example: "ping"
+			example: "ping",
+			category: "other"
 		}
 	},
 

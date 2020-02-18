@@ -15,12 +15,14 @@
     "moment": "^2.24.0",
     "mongodb": "^3.5.3",
     "node-fetch": "^2.6.0",
+    "string-similarity": "^4.0.1",
     "verborum": "^1.6.1"
   },
   "devDependencies": {
     "@types/mongodb": "^3.3.16",
     "@types/node": "^13.7.1",
     "@types/node-fetch": "^2.5.4",
+    "@types/string-similarity": "^3.0.0",
     "tscpaths": "^0.0.9",
     "typescript": "^3.7.5"
   }

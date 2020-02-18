@@ -1,4 +1,4 @@
-import { Guild, Structures } from "discord.js";
+import { Guild, GuildMember, Snowflake, Structures } from "discord.js";
 import Client from "./classes/Client";
 import { Database } from "@types";
 
@@ -41,8 +41,23 @@ Structures.extend("Guild", (Guild) => {
 			this._client = client;
 		}
 
+		/**
+		 * Get the guild's document
+		 * @returns {Promise<Database.GuildDB>}
+		 */
 		get db (): Promise<Database.GuildDB> {
 			return this._client.db.guilds.findOne({ id: this.id });
+		}
+
+		/**
+		 * Get a GuildMember by ID
+		 * @param {Snowflake} member - The member's ID
+		 * @returns {Promise<GuildMember>}
+		 */
+		async getMember (member: Snowflake): Promise<GuildMember | null> {
+			return this.members.cache.find(({ id }) => id === member)
+				|| await this.members.fetch(member)
+				|| null;
 		}
 	};
 });

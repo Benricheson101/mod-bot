@@ -1,7 +1,7 @@
 import Client from "@utils/classes/Client";
-import { Database as D } from "@utils/types";
+import { Database as D } from "@types";
 import { Logs } from "@utils/classes/Logs";
-import { Channel, Guild, Snowflake, TextChannel, User } from "discord.js";
+import { Channel, Guild, TextChannel, User } from "discord.js";
 
 export = async (client: Client, guild: Guild, user: User | null, infraction: D.Infraction) => {
 	let guildDb: D.GuildDB = await guild.db;
