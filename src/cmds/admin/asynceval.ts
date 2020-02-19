@@ -5,7 +5,12 @@ export = {
 	config: {
 		name: "asynceval",
 		aliases: ["asyncrun"],
-		ownerOnly: true
+		ownerOnly: true,
+		help: {
+			description: "Run javascript code (asynchronously)",
+			hidden: true,
+			category: "admin"
+		}
 	},
 
 	async run (client, message, args) {

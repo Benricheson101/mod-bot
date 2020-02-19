@@ -6,6 +6,7 @@ export = {
 		name: "owner",
 		ownerOnly: true,
 		help: {
+			description: ":eyes:",
 			hidden: true
 		}
 	},

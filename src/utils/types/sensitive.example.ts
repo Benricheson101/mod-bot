@@ -1,3 +1,4 @@
 export const apiKeys = {
-	chewey: ""// https://api.chewey-bot.top/
+	chewey: "", // https://api.chewey-bot.top/
+	nasa: "" // https://api.nasa.gov/
 };

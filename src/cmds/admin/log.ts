@@ -4,7 +4,12 @@ import { errors } from "@utils/constants";
 export = {
 	config: {
 		name: "log",
-		ownerOnly: true
+		ownerOnly: true,
+		help: {
+			description: "Emit a sample event",
+			hidden: true,
+			category: "admin"
+		}
 	},
 
 	async run (client, message, args) {

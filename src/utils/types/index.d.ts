@@ -5,6 +5,9 @@ import { Level } from "verborum/dist";
 import { Guild, Message, MessageEmbed, Snowflake, User } from "discord.js";
 import Client from "@classes/Client";
 import { MongoClientOptions } from "mongodb";
+import { RequestInit, Response } from "node-fetch";
+
+//todo: make this less messy
 
 declare module "discord.js" {
 	/**
@@ -62,8 +65,6 @@ declare namespace Command {
 	 */
 	export interface Command {
 		config: CommandOptions;
-
-		//constructor (config: CommandOptions): void;
 
 		/**
 		 * The function to run, the actual command code
@@ -329,3 +330,35 @@ declare namespace Util {
 		timeEndAction?: "accept" | "deny"
 	}
 }
+
+/** Make a request to an API */
+export class Request {
+
+	/**
+	 * Make a request to the [Chewey-Bot API](https://api.chewey-bot.top/)
+	 * @param	{string} path - The endpoint to make a request to
+	 */
+	chewey (path: string): Promise<any>;
+
+	/**
+	 * Make a request to https://blue.catbus.co.uk/
+	 * @param	{string} path - The endpoint to make a request to
+	 */
+	blue (path: string): Promise<any>;
+
+	/**
+	 * Make a request to the [NASA API](https://api.chewey-bot.top/)
+	 * @param	{string} path - The endpoint to make a request to
+	 */
+	nasa (path: string): Promise<any>;
+
+	/**
+	 * Make a request
+	 * @param {string} url - Where to make the request
+	 * @param {RequestInit} ops - Request options
+	 * @returns {Promise<Response>}
+	 * @private
+	 */
+	_request (url: string, ops?: RequestInit): Promise<Response>
+}
+

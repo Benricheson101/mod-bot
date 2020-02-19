@@ -50,7 +50,7 @@ export = {
 		`;
 
 		let acknowledgements: string = `
-		**Animal Images**: [Chewey Bot API](https://chewey-bot.top/)
+		**Images**: [Chewey Bot API](https://api.chewey-bot.top/), [NASA AIOD API](https://api.nasa.gov/), https://blue.catbus.co.uk/
 		`;
 
 		let embed = client.defaultEmbed
