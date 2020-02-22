@@ -38,6 +38,7 @@ export = {
 		**Username**: ${client.user.username},
 		**ID**: ${client.user.id}
 		**Created**: ${moment(client.user.createdAt).fromNow()} (${moment(client.user.createdAt).format("YYYY-MM-DD hh:mm")})
+		**Uptime**: ${client.uptime}
 		`;
 
 		//todo: memory
