@@ -5,6 +5,7 @@ import { admins, defaults } from "@utils/setup";
 export = {
 	config: {
 		name: "help",
+		aliases: ["cmds", "commands", "cmd-list"],
 		help: {
 			description: "Get information about each command",
 			category: "info"
