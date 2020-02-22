@@ -28,7 +28,7 @@ export = {
 			})
 			.then(async () => {
 				await generateEmbed("Compiling");
-				await asyncExec("npx tsc && yarn run build");
+				await asyncExec("yarn run build");
 			})
 			.then(async () => {
 				await generateEmbed("Shutting down");
@@ -46,10 +46,9 @@ export = {
 			// @ts-ignore
 			generateEmbed.message.push(`- ${msg}`);
 			// @ts-ignore
-			let embed = new MessageEmbed()
+			let embed = client.defaultEmbed
 				// @ts-ignore
-				.setDescription(`\`\`\`md\n${generateEmbed.message.join("\n")}\`\`\``)
-				.setColor("RANDOM");
+				.setDescription(`\`\`\`md\n${generateEmbed.message.join("\n")}\`\`\``);
 			client.log.info(msg);
 			if (m) await m.edit({ content: "", embed: embed });
 		}

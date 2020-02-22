@@ -31,12 +31,12 @@ export = {
 			case ("infadd"):
 			case ("infcreate"): {
 				client.emit("infCreate", message.guild, message.author, infraction);
-				return message.channel.send(":white_check_mark: `infCreate` event executed.");
+				return message.channel.send(":white_check_mark: `infCreate` event emitted.");
 			}
 			case ("infdelete"):
 			case ("infremove"): {
 				client.emit("infDelete", message.guild, message.author, infraction);
-				return message.channel.send(":white_check_mark: `infDelete` event executed.");
+				return message.channel.send(":white_check_mark: `infDelete` event emitted.");
 			}
 		}
 	}

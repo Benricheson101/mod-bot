@@ -5,7 +5,8 @@
   "main": "build/index.js",
   "repository": "https://github.com/benricheson101/mod-bot",
   "scripts": {
-    "build": "tscpaths -p tsconfig.json -s ./src -o ./build",
+    "fixpaths": "tscpaths -p tsconfig.json -s ./src -o ./build",
+    "build": "npx tsc -p tsconfig.json && yarn run fixpaths",
     "start": "node build/index.js"
   },
   "author": "Ben Richeson",
