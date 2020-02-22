@@ -1,5 +1,5 @@
 import { Command as C } from "@types";
-import { admins } from "@utils/constants";
+import { admins } from "@utils/setup";
 
 export = {
 	config: {

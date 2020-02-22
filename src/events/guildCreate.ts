@@ -1,4 +1,4 @@
-import { defaultGuild } from "@utils/constants";
+import { defaultGuild } from "@utils/setup";
 import Client from "@classes/Client";
 import { Guild } from "discord.js";
 

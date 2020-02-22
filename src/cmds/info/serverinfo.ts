@@ -8,7 +8,10 @@ export = {
 		aliases: ["sinfo", "guildinfo", "ginfo"],
 		channelType: "text",
 		help: {
-			description: "Get information about a guild"
+			description: "Get information about a guild",
+			example: "636384678185795645",
+			usage: "djfklasdjf;",
+			category: "info"
 		}
 	},
 

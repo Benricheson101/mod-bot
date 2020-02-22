@@ -5,11 +5,12 @@ import * as moment from "moment";
 export = {
 	config: {
 		name: "userinfo",
-		aliases: ["user", "info", "user-info"],
+		aliases: ["user", "user-info"],
 		help: {
 			description: "Get information about a user",
 			usage: "[mention|userid]",
-			example: "255834596766253057"
+			example: "255834596766253057",
+			category: "info"
 		}
 	},
 	async run (client, message, args) {

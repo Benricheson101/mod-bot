@@ -1,13 +1,20 @@
 import { Command as C, Database as D } from "@types";
 import CustomCommand from "@classes/CustomCommand";
-import { errors } from "@utils/constants";
+import { errors } from "@utils/setup";
 
 export = {
 	config: {
 		name: "createcommand",
 		aliases: ["ccc", "newcc", "new-cc", "create-command", "cc", "newcmd", "new-cmd"],
 		role: "moderator",
-		channelType: "text"
+		channelType: "text",
+		help: {
+			description: "Create a custom command!" +
+				"Placeholders: `{{servername}}`, `{{serverid}}`, `{{owner}}`, `{{author}}`, `{{authorping}}`",
+			usage: "<command-name> | <reply-text>",
+			example: "hello | Hello, {{authorping}}!",
+			category: "custom-commands"
+		}
 	},
 
 	async run (client, message, args) {

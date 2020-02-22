@@ -1,12 +1,18 @@
 import { Command as C, Database as D } from "@types";
-import { errors } from "@utils/constants";
+import { errors } from "@utils/setup";
 import { GuildMember } from "discord.js";
 
 export = {
 	config: {
 		name: "ban",
 		channelType: "text",
-		role: "moderator"
+		role: "moderator",
+		help: {
+			description: "Ban a user from the server",
+			permissions: ["BAN_MEMBERS"],
+			usage: "<user> [<reason>]",
+			category: "moderation"
+		}
 	},
 	async run (client, message, args) {
 		if (!message.member.permissions.has(2)) return message.channel.send(errors.userPerms(["BAN_MEMBERS"]));

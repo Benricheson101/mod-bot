@@ -3,36 +3,10 @@ import { PathLike, promises, readdirSync } from "fs";
 import { Collection } from "discord.js";
 import { Command } from "@types";
 import { resolve, basename } from "path";
-import { admins, colors } from "@utils/constants";
+import { clientOptions } from "@utils/setup";
 import "@utils/StructureExtensions";
 
-const client: Client = new Client({
-	disableEveryone: true,
-	defaultColor: colors.default,
-	owners: admins,
-	loggerOps: {
-		name: "mod-bot",
-		levels: [0, 1, 2, 3],
-		enableLogs: true,
-		logDirectory: "build/utils/logs",
-		format: "{{h12}} [{{clrst}}{{lvl}}{{clrend}}] {{name}}: {{clrst}}{{msg}}{{clrend}}",
-		colorScheme: {
-			useKeywords: true,
-			info: "seagreen",
-			warning: "khaki",
-			error: "firebrick",
-			debug: "steelblue"
-		}
-	},
-	databaseOps: {
-		url: process.env.MONGO,
-		name: "mod-bot",
-		mongoOptions: {
-			useNewUrlParser: true,
-			useUnifiedTopology: true
-		}
-	}
-});
+const client: Client = new Client(clientOptions);
 
 client
 	.db
@@ -42,7 +16,6 @@ client
 		client.log.error(err.stack);
 	});
 
-// recursive command loading
 client.commands = new Collection();
 (async () => {
 	let files = await getFiles("build/cmds");

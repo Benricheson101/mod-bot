@@ -1,7 +1,7 @@
 import { Database as D } from "@types";
 import Client from "./Client";
 import { MessageEmbed } from "discord.js";
-import { colors } from "@utils/constants";
+import { colors } from "@utils/setup";
 
 export class Logs {
 	static async infLogEmbed (client: Client, infraction: D.Infraction, action: "added" | "removed" | "updated"): Promise<MessageEmbed> {

@@ -1,8 +1,7 @@
 import { Command as C } from "@types";
-import { errors } from "@utils/constants";
+import { errors } from "@utils/setup";
 import { GuildMember, Role } from "discord.js";
 import { findBestMatch } from "string-similarity";
-import Util from "@classes/Util";
 
 export = {
 	config: {
@@ -11,7 +10,8 @@ export = {
 		help: {
 			description: "modify a user's roles",
 			permissions: ["MANAGE_ROLES"],
-			usage: "[{add|remove} {role}] [| {user}]"
+			usage: "[{add|remove} {role}] [| {user}]",
+			category: "moderation"
 		}
 	},
 

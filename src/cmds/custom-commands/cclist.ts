@@ -5,7 +5,12 @@ export = {
 	config: {
 		name: "cclist",
 		aliases: ["cc-list", "ccs", "list-ccs"],
-		role: "moderator"
+		role: "moderator",
+		help: {
+			description: "List all of the custom-commands for the server",
+			usage: "[start-page-number] [--json]",
+			category: "custom-commands"
+		}
 	},
 
 	async run (client, message, args) {

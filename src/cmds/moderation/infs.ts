@@ -1,5 +1,5 @@
 import { Command as C, Database } from "@types";
-import { errors } from "@utils/constants";
+import { errors } from "@utils/setup";
 import { MessageEmbed, User } from "discord.js";
 import { Embed } from "@classes/Embed";
 
@@ -7,7 +7,12 @@ export = {
 	config: {
 		name: "infs",
 		aliases: ["listinfs", "inflist", "inf-list", "list-infs"],
-		role: "moderator"
+		role: "moderator",
+		help: {
+			description: "Get a list of all infractions from the server or export them to a JSON file",
+			usage: "[<user|guild|export>] [<user>]",
+			category: "moderation"
+		}
 	},
 
 	async run (client, message, args) {
@@ -28,11 +33,11 @@ export = {
 				await generateEmbedArr(userInfs, { start: args[1], perEmbed: 4 });
 				break;
 			}
-			case ("guild"):
+			/*case ("guild"):
 			case ("server"): {
 				await generateEmbedArr((await message.guild.db).infractions, { start: args[0], perEmbed: 4 });
 				break;
-			}
+			}*/
 			case ("export"): {
 				let date = new Date();
 				await message.channel.send(
@@ -45,7 +50,7 @@ export = {
 				break;
 			}
 			default: {
-				await generateEmbedArr((await message.guild.db).infractions, { start: sub, perEmbed: 4 });
+				await generateEmbedArr(guild.infractions, { start: sub, perEmbed: 4 });
 				break;
 			}
 		}

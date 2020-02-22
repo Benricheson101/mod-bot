@@ -1,5 +1,5 @@
 import { Command as C, Database as D } from "@types";
-import { errors } from "@utils/constants";
+import { errors } from "@utils/setup";
 import { GuildMember, MessageEmbed, Snowflake } from "discord.js";
 
 export = {
@@ -7,7 +7,12 @@ export = {
 		name: "findinf",
 		aliases: ["find-inf", "infsearch", "inf-search", "inf"],
 		channelType: "text",
-		role: "moderator"
+		role: "moderator",
+		help: {
+			description: "Get information about an infraction",
+			usage: "<infraction-id>",
+			category: "moderation"
+		}
 	},
 
 	async run (client, message, args) {

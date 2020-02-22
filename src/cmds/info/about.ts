@@ -1,10 +1,11 @@
 import { Command as C } from "@types";
-import { admins } from "@utils/constants";
+import { admins } from "@utils/setup";
 import { User } from "discord.js";
 import * as moment from "moment";
 import { exec as e } from "child_process";
 import { promisify } from "util";
 import { platform, release } from "os";
+import ms = require("ms");
 
 const { dependencies, devDependencies, repository } = require("~/../package.json");
 
@@ -14,7 +15,8 @@ export = {
 		name: "about",
 		aliases: ["bot", "botinfo"],
 		help: {
-			description: "Get information about the bot"
+			description: "Get information about the bot",
+			category: "info"
 		}
 	},
 
@@ -38,7 +40,7 @@ export = {
 		**Username**: ${client.user.username},
 		**ID**: ${client.user.id}
 		**Created**: ${moment(client.user.createdAt).fromNow()} (${moment(client.user.createdAt).format("YYYY-MM-DD hh:mm")})
-		**Uptime**: ${client.uptime}
+		**Uptime**: ${ms(client.uptime)}
 		`;
 
 		//todo: memory

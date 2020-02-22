@@ -1,5 +1,5 @@
 import { Command as C, Database as D } from "@types";
-import { errors } from "@utils/constants";
+import { errors } from "@utils/setup";
 
 export = {
 	config: {
@@ -11,7 +11,8 @@ export = {
 		help: {
 			description: "Change the reason for an infraction",
 			usage: "<infId> [reason]",
-			example: "1 The user was spamming after being told to stop"
+			example: "1 The user was spamming after being told to stop",
+			category: "moderation"
 		}
 	},
 

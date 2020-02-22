@@ -1,12 +1,18 @@
 import { Command as C, Database as D } from "@types";
-import { errors } from "@utils/constants";
+import { errors } from "@utils/setup";
 import { GuildMember, Util } from "discord.js";
 
 export = {
 	config: {
 		name: "kick",
 		channelType: "text",
-		role: "moderator"
+		role: "moderator",
+		help: {
+			description: "Kick a user from the server",
+			permissions: ["KICK_MEMBERS"],
+			usage: "<user> [<reason>]",
+			category: "moderation"
+		}
 	},
 	async run (client, message, args) {
 		let guild: D.GuildDB = await client.db.guilds.findOne({ id: message.guild.id });

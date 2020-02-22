@@ -2,7 +2,7 @@ import "discord.js";
 import "verborum";
 import { Config } from "verborum/dist/utils/interfaces";
 import { Level } from "verborum/dist";
-import { Guild, Message, MessageEmbed, Snowflake, User } from "discord.js";
+import { Guild, Message, MessageEmbed, PermissionString, Snowflake, User } from "discord.js";
 import Client from "@classes/Client";
 import { MongoClientOptions } from "mongodb";
 import { RequestInit, Response } from "node-fetch";
@@ -95,11 +95,18 @@ declare namespace Command {
 			/** Example usage */
 			example?: string;
 			/** Permissions required to use the command */
-			permissions?: string | string[];
+			permissions?: PermissionString[];
 			/** Should the command be hidden from the help command/command list */
 			hidden?: boolean;
 			/** Which category the command falls into */
-			category?: string;
+			category?: "info"
+				| "picture"
+				| "picture.animal"
+				| "other"
+				| "admin"
+				| "moderation"
+				| "custom-commands"
+				| string;
 		}
 	}
 }

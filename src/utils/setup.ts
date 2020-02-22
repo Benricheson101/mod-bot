@@ -1,4 +1,4 @@
-import { Message, PermissionString, Snowflake } from "discord.js";
+import { ClientOptions, Message, PermissionString, Snowflake } from "discord.js";
 import { Database as D, Command as C } from "@types";
 
 export const admins = [
@@ -46,5 +46,33 @@ export const colors = {
 		added: "#1ee822",
 		updated: "#1ec3e8",
 		removed: "#ab0707"
+	}
+};
+
+export const clientOptions: ClientOptions = {
+	disableEveryone: true,
+	defaultColor: colors.default,
+	owners: admins,
+	loggerOps: {
+		name: "mod-bot",
+		levels: [0, 1, 2, 3],
+		enableLogs: process.env.NODE_ENV === "production",
+		logDirectory: "build/utils/logs",
+		format: "{{h12}} [{{clrst}}{{lvl}}{{clrend}}] {{name}}: {{clrst}}{{msg}}{{clrend}}",
+		colorScheme: {
+			useKeywords: true,
+			info: "seagreen",
+			warning: "khaki",
+			error: "firebrick",
+			debug: "steelblue"
+		}
+	},
+	databaseOps: {
+		url: process.env.MONGO,
+		name: "mod-bot",
+		mongoOptions: {
+			useNewUrlParser: true,
+			useUnifiedTopology: true
+		}
 	}
 };

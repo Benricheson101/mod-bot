@@ -6,7 +6,12 @@ export = {
 		name: "warn",
 		aliases: ["warning", "add-inf"],
 		channelType: "text",
-		role: "moderator"
+		role: "moderator",
+		help: {
+			description: "Warn a user",
+			usage: "<user> <reason>",
+			category: "moderation"
+		}
 	},
 
 	async run (client, message, args) {

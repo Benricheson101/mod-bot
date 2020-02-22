@@ -1,5 +1,5 @@
 import { Command as C, Database } from "@types";
-import { errors } from "@utils/constants";
+import { errors } from "@utils/setup";
 
 export = {
 	config: {

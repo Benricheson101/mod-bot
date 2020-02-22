@@ -1,11 +1,16 @@
 import { Command as C } from "@types";
-import { errors } from "@utils/constants";
+import { errors } from "@utils/setup";
 
 export = {
 	config: {
 		name: "delinf",
 		aliases: ["removeinf", "remove-inf", "rm-inf", "rminf", "del-inf"],
-		role: "moderator"
+		role: "moderator",
+		help: {
+			description: "Delete an infraction",
+			usage: "<infraction-id>",
+			category: "moderation"
+		}
 	},
 
 	async run (client, message, args) {

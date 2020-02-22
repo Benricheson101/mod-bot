@@ -1,11 +1,13 @@
 import { Database as D, Command } from "@types";
-import { defaultGuild, errors, defaults } from "@utils/constants";
+import { defaultGuild, errors, defaults } from "@utils/setup";
 import { Message, Snowflake } from "discord.js";
 import Client from "@classes/Client";
 
 export = async (client: Client, message: Message): Promise<Message> => {
 	if (message.author.bot) return;
 	if (message.channel.type === "dm") return;
+	if (client.uptime < 5000 && !client.options.owners.includes(message.author.id)) return message.channel.send("🕐 I am still starting up, please try that again in a few seconds.");
+
 	let guild: any = defaults;
 
 //todo: commands in DMs
@@ -63,6 +65,15 @@ export = async (client: Client, message: Message): Promise<Message> => {
 		.catch((err: Error) => {
 			console.error(err.stack);
 			client.log.error("I broke:", err.message);
-			message.channel.send(errors.generic);
+			if (client.options.owners.includes(message.author.id)) {
+				message.channel.send({
+					embed: client.defaultEmbed
+						.setAuthor("I broke")
+						.setTitle(err.name.substring(0, 256))
+						.setDescription("```js\n" + err.stack.substring(0, 2000) + "```")
+						.setFooter(message.content)
+						.setTimestamp()
+				});
+			} else message.channel.send(errors.generic);
 		});
 }
