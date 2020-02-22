@@ -18,13 +18,17 @@ export = {
 
 		if (process.env.NODE_ENV !== "production" && args[0] !== "-f") return message.channel.send("⚠️ I am not running in the production environment. You probably don't want to deploy now."); // Don't deploy if the bot isn't running in the production environment
 		let m = await message.channel.send("Loading...");
-		await generateEmbed("Deploy command received");
+		await generateEmbed(`Deployment initiated by ${message.author.tag}`);
 
 		await generateEmbed("Updating code");
 		asyncExec("git fetch origin && git reset --hard origin/dev") // Pull new code from the production branch on GitHub
 			.then(async () => {
 				await generateEmbed("Installing new yarn packages");
 				return asyncExec("npm i --production"); // Installing any new dependencies
+			})
+			.then(async () => {
+				await generateEmbed("Compiling");
+				await asyncExec("npx tsc && yarn run build");
 			})
 			.then(async () => {
 				await generateEmbed("Shutting down");
