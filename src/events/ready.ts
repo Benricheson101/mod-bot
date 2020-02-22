@@ -23,7 +23,23 @@ export = async (client) => {
 	await client.user.setPresence({
 		status: "online",
 		activity: {
-			name: `${client.users.cache.size} users in ${client.guilds.cache.size} guilds! | ${defaults.prefix}help`
+			name: "Ready!",
+			type: "PLAYING"
 		}
 	});
+
+	await wait(10000);
+
+	await setStatus();
+	setInterval(setStatus, 30000);
+
+	async function setStatus (): Promise<void> {
+		await client.user.setPresence({
+			status: "online",
+			activity: {
+				name: `${client.users.cache.size} users in ${client.guilds.cache.size} guilds! | ${defaults.prefix}help`,
+				type: "WATCHING"
+			}
+		});
+	}
 };

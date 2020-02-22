@@ -37,7 +37,7 @@ export = {
 		`;
 
 		let botInfo: string = `
-		**Username**: ${client.user.username},
+		**User**: ${client.user.tag}
 		**ID**: ${client.user.id}
 		**Created**: ${moment(client.user.createdAt).fromNow()} (${moment(client.user.createdAt).format("YYYY-MM-DD hh:mm")})
 		**Uptime**: ${ms(client.uptime)}
