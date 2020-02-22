@@ -21,7 +21,7 @@ export = {
 		await generateEmbed("Deploy command received");
 
 		await generateEmbed("Updating code");
-		asyncExec("git fetch origin && git reset --hard origin/production") // Pull new code from the production branch on GitHub
+		asyncExec("git fetch origin && git reset --hard origin/dev") // Pull new code from the production branch on GitHub
 			.then(async () => {
 				await generateEmbed("Installing new yarn packages");
 				return asyncExec("npm i --production"); // Installing any new dependencies
