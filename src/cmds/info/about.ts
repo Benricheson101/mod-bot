@@ -49,7 +49,6 @@ export = {
 		**Node Version**: ${nodeVersion.replace("\n", "")}
 		**OS**: ${release()} (${platform()})
 		**Dependencies (${Object.keys(dependencies).length})**: \n\`\`\`json\n${JSON.stringify(dependencies, null, 2)}\`\`\`
-		**DevDependencies (${Object.keys(devDependencies).length})**: \n\`\`\`json\n${JSON.stringify(devDependencies, null, 2)}\`\`\`
 		`;
 
 		let acknowledgements: string = `
