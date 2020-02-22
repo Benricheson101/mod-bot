@@ -43,7 +43,7 @@ export = {
 
 			if (help && help.description) helpMsg1.push(`**Description**: ${help.description}`);
 			if (aliases) helpMsg1.push(`**Aliases**: ${aliases.join(", ")}`);
-			if (channelType) helpMsg1.push(`**Channel Type**: ${channelType}`);
+			//if (channelType) helpMsg1.push(`**Channel Type**: ${channelType}`);
 			if (role) helpMsg1.push(`**Role**: ${role}`);
 			if (help && help.permissions) helpMsg1.push(`**Required Permissions**: ${help.permissions.join(", ")}`);
 

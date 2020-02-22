@@ -18,7 +18,7 @@ export = async (client) => {
 		}
 	});
 
-	await wait(5000);
+	await wait(2000);
 
 	await client.user.setPresence({
 		status: "online",
