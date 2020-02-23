@@ -26,7 +26,6 @@ export = {
 		**ID**: ${user.id}
 		**Bot**: ${user.bot}
 		**Created**: ${moment(user.createdAt).fromNow()} (${moment(user.createdAt).format("YYYY-MM-DD hh:mm")})
-		**Avatar**: [Avatar](${user.displayAvatarURL({ format: "png", dynamic: true })})
 		**Status**: ${user.presence.status}
 		${user.presence.activities[0] ?
 			`**Presence Type**: ${user.presence.activities[0].type}

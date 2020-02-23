@@ -7,13 +7,13 @@ import { promisify } from "util";
 import { platform, release } from "os";
 import ms = require("ms");
 
-const { dependencies, devDependencies, repository } = require("~/../package.json");
+const { dependencies, repository } = require("~/../package.json");
 
 
 export = {
 	config: {
 		name: "about",
-		aliases: ["bot", "botinfo"],
+		aliases: ["bot", "botinfo", "stats"],
 		help: {
 			description: "Get information about the bot",
 			category: "info"
@@ -43,6 +43,12 @@ export = {
 		**Uptime**: ${ms(client.uptime)}
 		`;
 
+		let stats: string = `
+		**Guilds**: ${client.guilds.cache.size}
+		**Users**: ${client.users.cache.size}
+		**Channels**: ${client.channels.cache.size}
+		`;
+
 		//todo: memory
 		let technicalInfo: string = `
 		**Repository**: [GitHub](${repository})
@@ -58,6 +64,7 @@ export = {
 		let embed = client.defaultEmbed
 			.addField("Author", authorInfo.replace(/\t+/g, ""))
 			.addField("Bot", botInfo.replace(/\t+/g, ""))
+			.addField("Stats", stats.replace(/\t+/g, ""))
 			.addField("Technical", technicalInfo.replace(/\t+/g, "")) // too much?
 			.addField("Acknowledgements", acknowledgements.replace(/\t+/g, ""));
 		await message.channel.send({ embed: embed });

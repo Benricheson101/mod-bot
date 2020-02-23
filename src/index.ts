@@ -16,7 +16,7 @@ client
 		client.log.error(err.stack);
 	});
 
-client.commands = new Collection();
+client.commands = new Collection() as Collection<string, Command.Command>;
 (async () => {
 	let files = await getFiles("build/cmds");
 	for await (let file of files) {
@@ -56,11 +56,6 @@ if (!eventFiles || eventFiles.length < 1) {
 	if (failed.length !== 0) client.log.warning("Failed to load:", failed.join(", "));
 	client.log.info(`Loaded ${eventFiles.length} event${eventFiles.length === 1 ? "" : "s"}.`);
 }
-
-client.on("infDelete", (guild, user, infraction) => {
-	console.log(guild.name, user.tag ?? "[user not found]", infraction);
-});
-
 client.login(process.env.TOKEN)
 	.catch((err: Error) => {
 		client.log.error(err.stack);

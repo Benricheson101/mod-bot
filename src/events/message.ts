@@ -53,11 +53,7 @@ export = async (client: Client, message: Message): Promise<Message> => {
 			let roles = guild.config.roles[cmd.config.role];
 			if (!roles) return message.channel.send(`:x: You have not setup any **${cmd.config.role}** roles for your server.`);
 			let matches = message.member.roles.cache.some((r) => roles.includes(r.id));
-			/*
-			let memberRoles = message.member.roles.cache.keyArray();
-			let matches: Snowflake[] = memberRoles.filter((r) => roles.includes(r));
-			*/
-			if (!matches) return message.channel.send(":x: You don't have the required role to use this command.");
+ 			if (!matches) return message.channel.send(":x: You don't have the required role to use this command.");
 		}
 	}
 
