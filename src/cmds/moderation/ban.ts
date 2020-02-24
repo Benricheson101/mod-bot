@@ -26,7 +26,7 @@ export = {
 		let reason: string = args.slice(1).join(" ");
 
 		let notified: string;
-		if (message.guild.db.config.infNotify) {
+		if ((await message.guild.db).config.infNotify) {
 			try {
 				await member.send(`You were banned from \`${message.guild.name}\`${reason ? `\n> Reason: \`${reason}\`` : ""}`);
 				notified = "User was notified.";
