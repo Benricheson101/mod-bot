@@ -384,6 +384,6 @@ export class Request {
 	 * @returns {Promise<Response>}
 	 * @private
 	 */
-	_request (url: string, ops?: RequestInit): Promise<Response>
+	_makeRequest (url: string, ops?: RequestInit): Promise<Response>
 }
 

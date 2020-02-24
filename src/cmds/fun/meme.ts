@@ -1,5 +1,6 @@
 import { Command as C } from "@types";
 import fetch from "node-fetch";
+import Request from "@classes/Request";
 
 export = {
 	config: {
@@ -17,7 +18,7 @@ export = {
 		let source: string = sources[Math.floor(Math.random() * sources.length)];
 		let url: string = `https://www.reddit.com/r/${source}.json?sort=hot&t=week`;
 
-		let { data: { children } } = await fetch(url)
+		let { data: { children } } = await new Request()._makeRequest(url)
 			.then((r) => r.json());
 		let posts: any[] = message.channel.nsfw ? children : children.filter((p) => !p.over_18);
 		let randInt: number = Math.floor(Math.random() * posts.length);
