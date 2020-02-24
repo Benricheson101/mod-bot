@@ -16,11 +16,16 @@ export = {
 	},
 
 	async run (client, message, args) {
-		let { result } = await new CustomCommand(client)
+		let guild = await message.guild.db;
+		let result: any = await new CustomCommand(client)
 			.delete(message.guild.id, args.join("_"));
 
-		result = result.result;
-		if (result.n === 0 || result.nModified === 0) return message.channel.send(`:x: I could not find a command with the name/ID: \`${args.join("_")}\``);
+		//todo: why did i have to do this?
+		if (!result) return message.channel.send(`:x: I could not find a command with the name or ID: \`${args.join("_")}\``);
+
+		result = result.result.result;
+
+		if (!result || result.n === 0 || result.nModified === 0) return message.channel.send(`:x: I could not find a command with the name or ID: \`${args.join("_")}\``);
 		if (result.ok !== 1) return message.channel.send(errors.generic);
 		await message.channel.send(`:white_check_mark: Successfully deleted command: \`${args.join("_")}\``);
 	}
