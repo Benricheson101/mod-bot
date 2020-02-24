@@ -18,8 +18,7 @@ export = {
 		let source: string = sources[Math.floor(Math.random() * sources.length)];
 		let url: string = `https://www.reddit.com/r/${source}.json?sort=hot&t=week`;
 
-		let { data: { children } } = await new Request()._makeRequest(url)
-			.then((r) => r.json());
+		let { data: { children } } = await new Request()._makeRequest(url);
 		let posts: any[] = message.channel.nsfw ? children : children.filter((p) => !p.over_18);
 		let randInt: number = Math.floor(Math.random() * posts.length);
 
