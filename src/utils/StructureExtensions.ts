@@ -1,6 +1,7 @@
 import { Guild, GuildMember, Snowflake, Structures } from "discord.js";
 import Client from "./classes/Client";
 import { Database } from "@types";
+import { findBestMatch } from "string-similarity";
 
 Structures.extend("GuildMember", (GM) => {
 	return class extends GM {
@@ -58,6 +59,23 @@ Structures.extend("Guild", (Guild) => {
 			return this.members.cache.find(({ id }) => id === member)
 				|| await this.members.fetch(member)
 				|| null;
+		}
+
+		/**
+		 * Get a user by finding their username as a near match to a string
+		 * @param {string} username - The string to match
+		 * @param {boolean} nicknames - Should it look for nicknames too?
+		 * @returns {Promise<void>}
+		 */
+		matchUsername (username: string, nicknames?: boolean): GuildMember | null {
+			let members: GuildMember[] = this.members.cache.array();
+			let lcMembers = members.map(({ user: { username: u }, displayName }: GuildMember) => {
+				return nicknames ? u.toLowerCase() && displayName.toLowerCase() : u.toLowerCase();
+			});
+
+			let { bestMatchIndex, bestMatch: { rating } } = findBestMatch(username.toLowerCase(), lcMembers);
+			if (rating < .3) return null;
+			return members[bestMatchIndex];
 		}
 	};
 });

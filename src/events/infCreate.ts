@@ -10,5 +10,5 @@ export = async (client: Client, guild: Guild, user: User | null, infraction: D.I
 		let ch: Channel = client.channels.cache.get(logChannel.channel);
 		if (!ch) return;
 		(ch as TextChannel).send({ embed: await Logs.infLogEmbed(client, infraction, "added") });
-	} else console.log("This server has no infCreate channel");
+	} else return ; // the server has no infCreate channel
 }

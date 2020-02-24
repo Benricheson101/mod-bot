@@ -106,6 +106,7 @@ declare namespace Command {
 				| "admin"
 				| "moderation"
 				| "custom-commands"
+				| "fun"
 				| string;
 		}
 	}
@@ -144,6 +145,13 @@ declare namespace Database {
 				admin?: Snowflake[];
 			}
 			enabledLogs: Logs[];
+			/** Starboard options */
+			starboard: {
+				/** Enable/disable the starboard */
+				enabled: boolean;
+				/** Which channel to post messages in */
+				channel?: Snowflake;
+			}
 		}
 		/** Infractions */
 		infractions: Infraction[];
@@ -153,6 +161,8 @@ declare namespace Database {
 		commands?: CustomCommand[]
 		/** Auto incrementing custom command ID number */
 		CCID: number;
+		/** Starred messages */
+		starboardMessages: Starboard[];
 	}
 
 	/**
@@ -209,6 +219,14 @@ declare namespace Database {
 	export interface Logs {
 		event: string;
 		channel: Snowflake;
+	}
+
+	/** Starboard */
+	export interface Starboard {
+		/** The message id */
+		message: Snowflake;
+		/** The message content */
+		content: string;
 	}
 }
 

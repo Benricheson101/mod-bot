@@ -1,5 +1,5 @@
 import Client from "./Client";
-import { MessageEmbed, MessageReaction, ReactionCollector, User } from "discord.js";
+import { Message, MessageEmbed, MessageReaction, ReactionCollector, User } from "discord.js";
 import { Embed as E } from "@types";
 
 export class Embed implements E.Embed {
@@ -54,4 +54,12 @@ export class Embed implements E.Embed {
 			}
 		});
 	}
+
+	static generateStarboardEmbed (message: Message): MessageEmbed {
+		return (message.client as Client).defaultEmbed
+			.setAuthor(message.author.tag, message.author.displayAvatarURL({ format: "png", dynamic: true }))
+			.setDescription(message.content)
+			.setFooter(message.id);
+	}
+
 }

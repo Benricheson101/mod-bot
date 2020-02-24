@@ -81,9 +81,7 @@ export = {
 			let perEmbed: number = ops.perEmbed ?? 4;
 			let start: number = --ops.start ?? 0;
 			let totalPages: number = Math.ceil(length / perEmbed);
-			console.log(start, args);
 			if (isNaN(start) || start > totalPages || start < 1) start = 0;
-			console.log(start);
 
 			while (g.length > 0) {
 				let arr = g.splice(0, perEmbed);

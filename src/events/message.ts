@@ -1,12 +1,11 @@
-import { Database as D, Command } from "@types";
+import { Database as D, Command, Events } from "@types";
 import { defaultGuild, errors, defaults } from "@utils/setup";
-import { Message, Snowflake } from "discord.js";
+import { Channel, Message, Snowflake } from "discord.js";
 import Client from "@classes/Client";
 
 export = async (client: Client, message: Message): Promise<Message> => {
 	if (message.author.bot) return;
 	if (message.channel.type === "dm") return;
-	if (client.uptime < 5000 && !client.options.owners.includes(message.author.id)) return message.channel.send("🕐 I am still starting up, please try that again in a few seconds.");
 
 	let guild: any = defaults;
 
@@ -23,7 +22,7 @@ export = async (client: Client, message: Message): Promise<Message> => {
 	}
 
 	if (message.content.indexOf(guild.config.prefix) !== 0) return;
-	const args: string[] = message.content.slice(guild.config.prefix.length).split(" ");
+	const args: string[] = message.content.slice(guild.config.prefix.length).split(/\s+/);
 	let command: string = args.shift().toLowerCase();
 
 	let cmd: Command.Command = client.commands.get(command)
@@ -53,10 +52,11 @@ export = async (client: Client, message: Message): Promise<Message> => {
 			let roles = guild.config.roles[cmd.config.role];
 			if (!roles) return message.channel.send(`:x: You have not setup any **${cmd.config.role}** roles for your server.`);
 			let matches = message.member.roles.cache.some((r) => roles.includes(r.id));
- 			if (!matches) return message.channel.send(":x: You don't have the required role to use this command.");
+			if (!matches) return message.channel.send(":x: You don't have the required role to use this command.");
 		}
 	}
 
+	if (client.uptime < 5000 && !client.options.owners.includes(message.author.id)) return message.channel.send("🕐 I am still starting up, please try that again in a few seconds.");
 	cmd.run(client, message, args)
 		.catch((err: Error) => {
 			console.error(err.stack);

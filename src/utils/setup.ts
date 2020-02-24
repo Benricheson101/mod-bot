@@ -16,12 +16,16 @@ export const defaultGuild = (guildId: Snowflake): D.GuildDB => {
 			prefix: defaults.prefix,
 			infNotify: true,
 			roles: {},
-			enabledLogs: []
+			enabledLogs: [],
+			starboard: {
+				enabled: false
+			}
 		},
 		infractions: [],
 		infId: 0,
 		commands: [],
-		CCID: 0
+		CCID: 0,
+		starboardMessages: []
 	};
 };
 

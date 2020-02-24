@@ -52,7 +52,6 @@ export = {
 			case ("-"):
 			case ("take"):
 			case ("remove"): {
-				console.log(member.roles.cache.map((r) => r.name));
 				//todo: apparently something is wrong with this
 				if (!member.roles.cache.has(foundRole.id)) return message.channel.send(":exclamation: This user does not have that role!");
 				let compareAuthorRoles = message.member.roles.highest.comparePositionTo(foundRole);
