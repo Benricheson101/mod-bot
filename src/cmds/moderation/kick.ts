@@ -20,7 +20,7 @@ export = {
 		if (!message.guild.me.permissions.has(2)) return message.channel.send(errors.botPerms(["KICK_MEMBERS"]));
 		if (!args[0]) return message.channel.send(errors.usage);
 		let member: GuildMember = message.mentions.members.first()
-			|| message.guild.members.find((m: GuildMember) => m.id === args[0]);
+			|| message.guild.members.cache.find((m: GuildMember) => m.id === args[0]);
 		if (!member) return message.channel.send(`:x: I could not find that user.`);
 		if (!member.kickable) return message.channel.send(":x: I am not able to kick this user");
 
