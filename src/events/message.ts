@@ -2,6 +2,7 @@ import { Database as D, Command, Events } from "@types";
 import { defaultGuild, errors, defaults } from "@utils/setup";
 import { Channel, Message, Snowflake } from "discord.js";
 import Client from "@classes/Client";
+import { start } from "repl";
 
 export = async (client: Client, message: Message): Promise<Message> => {
 	if (message.author.bot) return;
@@ -57,6 +58,9 @@ export = async (client: Client, message: Message): Promise<Message> => {
 	}
 
 	if (client.uptime < 5000 && !client.options.owners.includes(message.author.id)) return message.channel.send("🕐 I am still starting up, please try that again in a few seconds.");
+
+	let startTime: Date = new Date();
+
 	cmd.run(client, message, args)
 		.catch((err: Error) => {
 			console.error(err.stack);
@@ -72,4 +76,8 @@ export = async (client: Client, message: Message): Promise<Message> => {
 				});
 			} else message.channel.send(errors.generic);
 		});
+
+	let endTime: Date = new Date();
+
+	client.log.debug(`[${cmd.config.name}] Command execution took ${Number(endTime) - Number(startTime)}ms`);
 }

@@ -6,7 +6,7 @@ export const admins = [
 ];
 
 export const defaults = {
-	prefix: "modbot:"
+	prefix: "otter:"
 };
 
 export const defaultGuild = (guildId: Snowflake): D.GuildDB => {

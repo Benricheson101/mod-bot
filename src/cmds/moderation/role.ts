@@ -20,7 +20,15 @@ export = {
 		if (!message.guild.me.permissions.has(268435456)) return message.channel.send(errors.botPerms(["MANAGE_ROLES"]));
 
 		let subCmd = args.shift();
-		if (!subCmd) return message.channel.send("<insert role list here>"); //todo
+
+		let formattedRoles = message.guild.roles.cache.sort((a, b) => a.name.charCodeAt(0) - b.name.charCodeAt(0)).map((r) => `- ${r.name}`);
+		if (!subCmd) return message.channel.send(formattedRoles, {
+			code: "md",
+			split: {
+				char: "\n"
+			}
+		});
+
 
 		if (!args[0]) return message.channel.send(await errors.genUsage(this, message));
 
@@ -90,4 +98,5 @@ export = {
 		}
 
 	}
+
 } as C.Command;
