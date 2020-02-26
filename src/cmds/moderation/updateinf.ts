@@ -12,7 +12,8 @@ export = {
 			description: "Change the reason for an infraction",
 			usage: "<infId> [reason]",
 			example: "1 The user was spamming after being told to stop",
-			category: "moderation"
+			category: "moderation",
+			hidden: true
 		}
 	},
 
