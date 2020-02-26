@@ -17,7 +17,7 @@ export default class extends Client {
 
 	constructor (options: ClientOptions) {
 		super(options);
-		if (options.enableDb !== false) this.db = new Database(options.databaseOps);
+		this.db = new Database(options.databaseOps);
 		this.infractions = new Infraction(this);
 	}
 

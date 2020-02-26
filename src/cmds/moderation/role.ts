@@ -21,6 +21,7 @@ export = {
 
 		let subCmd = args.shift();
 
+		//todo: filter roles that the user is able to add
 		let formattedRoles = message.guild.roles.cache.sort((a, b) => a.name.charCodeAt(0) - b.name.charCodeAt(0)).map((r) => `- ${r.name}`);
 		if (!subCmd) return message.channel.send(formattedRoles, {
 			code: "md",

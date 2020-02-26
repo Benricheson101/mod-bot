@@ -13,7 +13,8 @@ export = {
 	},
 
 	async run (client, message, args) {
-		let embed = client.defaultEmbed;
+		let embed = client.defaultEmbed
+			.setFooter(`The prefix for ${message.guild.name} is ${(await message.guild.db).config.prefix ?? defaults.prefix}`);
 		let commands: Collection<string, C.Command> = client.commands;
 
 		// todo: make this use a recursive loop instead of several if statements
@@ -75,10 +76,10 @@ export = {
 			let cmds = commands
 				.filter((c: C.Command) => c.config.help && !c.config.help.hidden && c.config.help.category && c.config.help.category === categories[category])
 				.map((c) => c.config.name);
-			embed.addField(categories[category] ?? "none", cmds.join("\n") ?? "none");
+			embed.addField(`» ${capitalize(categories[category])} «` ?? "none", cmds.join("\n") ?? "none");
 		}
 
-		if (admins.includes(message.author.id)) embed.addField("hidden", hidden.join("\n"));
+		if (admins.includes(message.author.id)) embed.addField("» Hidden «", hidden.join("\n"));
 
 		await message.channel.send(embed);
 
@@ -90,6 +91,5 @@ export = {
 		function capitalize (word: string): string {
 			return word[0].toUpperCase() + word.slice(1);
 		}
-
 	}
 } as C.Command;

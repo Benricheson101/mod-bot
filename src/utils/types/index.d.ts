@@ -101,7 +101,7 @@ declare namespace Command {
 			/** Which category the command falls into */
 			category?: "info"
 				| "picture"
-				| "picture.animal"
+				| "animal"
 				| "other"
 				| "admin"
 				| "moderation"

@@ -6,7 +6,7 @@ export = {
 		name: "fox",
 		help: {
 			description: "Get a picture of a fox!",
-			category: "picture.animal"
+			category: "animal"
 		}
 	},
 

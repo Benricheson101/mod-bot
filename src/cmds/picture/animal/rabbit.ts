@@ -7,7 +7,7 @@ export = {
 		aliases: ["bunny"],
 		help: {
 			description: "Get a picture of a rabbit",
-			category: "picture.animal"
+			category: "animal"
 		}
 	},
 
