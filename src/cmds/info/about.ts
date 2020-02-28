@@ -26,8 +26,7 @@ export = {
 
 		let nodeVersion = (await exec("node -v")).stdout;
 		let commit: string = (await exec("git rev-parse HEAD")).stdout;
-		let commitDate: string = (await exec("echo $(git log -1 --pretty=format:'%ad')")).stdout;
-		console.log(commitDate);
+		let commitDate: Date = new Date((await exec("echo $(git log -1 --pretty=format:'%ad')")).stdout);
 
 		let devs: User[] = [];
 		for (let u of admins) {
@@ -58,8 +57,8 @@ export = {
 		**Node Version**: ${nodeVersion.replace("\n", "")}
 		**OS**: ${release()} (${platform()})
 		**Dependencies (${Object.keys(dependencies).length})**: \n\`\`\`json\n${JSON.stringify(dependencies, null, 2)}\`\`\`
-		**Commit**: [${commit}](${repository}/commit/${commit.replace(/\n/g, "")})
-		**Commit Date**: ${commitDate.replace("\n", "")}
+		**Commit**: [${commit.replace("\n", "")}](${repository}/commit/${commit.replace("\n", "")})
+		**Commit Date**: ${moment(commitDate).fromNow()} (${moment(commitDate).format("YYYY-MM-DD hh:mm")})
 		`;
 
 		let acknowledgements: string = `
