@@ -87,7 +87,7 @@ declare namespace Command {
 		/** Enable or disable the command */
 		disabled?: boolean;
 		/** Stuff for the help command */
-		help?: {
+		help: {
 			/** What the command does */
 			description?: string;
 			/** Command syntax */
@@ -99,7 +99,7 @@ declare namespace Command {
 			/** Should the command be hidden from the help command/command list */
 			hidden?: boolean;
 			/** Which category the command falls into */
-			category?: "info"
+			category: "info"
 				| "picture"
 				| "animal"
 				| "other"

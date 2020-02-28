@@ -1,11 +1,9 @@
-import { Util as U } from "@types";
 import { Message, MessageReaction, User } from "discord.js";
-import { promisify } from "util";
 
-export default class implements U.Util {
+export const Utils = {
 
 	// todo: does not work
-	static async confirmation (message, confirmationMsg, { time = 300000, timeEndAction = "deny" }) {
+	async confirmation (message, confirmationMsg, { time = 300000, timeEndAction = "deny" }) {
 		const emojis = {
 			accept: "✅", // :white_check_mark:
 			deny: "❌" // :x:
@@ -34,4 +32,4 @@ export default class implements U.Util {
 			}
 		});
 	}
-}
+};

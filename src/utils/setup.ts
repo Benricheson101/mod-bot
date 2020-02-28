@@ -80,3 +80,8 @@ export const clientOptions: ClientOptions = {
 		}
 	}
 };
+
+export const regex: { [key: string]: RegExp } = {
+	invite: new RegExp("(?:^https?:\/\/)?(www\\.)?discord(app.com\/invite|.gg)\/([a-zA-Z-_])+", "g"),
+	emoji: new RegExp("<(?:a)?:([aA-z-_]){0,32}:(\\d){16,18}>", "g")
+};
