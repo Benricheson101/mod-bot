@@ -24,6 +24,8 @@ declare module "discord.js" {
 		defaultColor?: string;
 		/** The bot owners */
 		owners?: Snowflake[];
+		/** Should the bot respond to mentions */
+		mentionPrefix?: boolean;
 	}
 
 	/** Guild structure */
@@ -107,6 +109,7 @@ declare namespace Command {
 				| "moderation"
 				| "custom-commands"
 				| "fun"
+				| "poll"
 				| string;
 		}
 	}
