@@ -28,7 +28,7 @@ client.commands = new Collection() as Collection<string, Command.Command>;
 		client.on(eventName, event.bind(null, client));
 		client.log.debug("[E] Successfully loaded", eventName);
 	}
-	
+
 	let commandFiles = await fileLoader("build/cmds");
 	for await (let file of commandFiles) {
 		if (!file.endsWith(".js")) continue;

@@ -6,10 +6,12 @@ import { Guild, Message, MessageEmbed, PermissionString, Snowflake, User } from 
 import Client from "@classes/Client";
 import { MongoClientOptions } from "mongodb";
 import { RequestInit, Response } from "node-fetch";
+import { NodeOptions } from "@sentry/node";
 
 //todo: make this less messy
 
 declare module "discord.js" {
+
 	/**
 	 * The Discord.js client options
 	 */
@@ -26,6 +28,13 @@ declare module "discord.js" {
 		owners?: Snowflake[];
 		/** Should the bot respond to mentions */
 		mentionPrefix?: boolean;
+		/** Sentry error tracking settings */
+		sentry?: {
+			/** Enable or disable Sentry */
+			enabled?: boolean;
+			/** Sentry DSN */
+			sentryOps?: NodeOptions
+		}
 	}
 
 	/** Guild structure */

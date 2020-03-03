@@ -1,5 +1,6 @@
 import { ClientOptions, Message, PermissionString, Snowflake } from "discord.js";
 import { Database as D, Command as C } from "@types";
+import { sentryDSN } from "@utils/sensitive";
 
 export const admins = [
 	"255834596766253057"
@@ -77,6 +78,12 @@ export const clientOptions: ClientOptions = {
 		mongoOptions: {
 			useNewUrlParser: true,
 			useUnifiedTopology: true
+		}
+	},
+	sentry: {
+		enabled: process.env.NODE_ENV === "production",
+		sentryOps: {
+			dsn: sentryDSN
 		}
 	}
 };
