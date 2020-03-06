@@ -6,6 +6,7 @@ export = {
 	config: {
 		name: "poll",
 		role: "moderator",
+		disabled: true,
 		help: {
 			description: "Start a poll!",
 			usage: "<question> | <choice> | <choice> | ... ]"
