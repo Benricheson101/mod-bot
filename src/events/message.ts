@@ -63,8 +63,6 @@ export = async (client: Client, message: Message): Promise<Message> => {
 
 	cmd.run(client, message, args)
 		.catch((err: Error) => {
-			console.error(err.stack);
-			client.log.error("I broke:", err.message);
 			if (client.options.owners.includes(message.author.id)) {
 				message.channel.send({
 					embed: client.defaultEmbed
@@ -74,6 +72,8 @@ export = async (client: Client, message: Message): Promise<Message> => {
 						.setFooter(message.content)
 						.setTimestamp()
 				});
+				client.log.error(`[Error] Error running command: ${cmd.config.name} | ${err.message}`);
+				throw err;
 			} else message.channel.send(errors.generic);
 		});
 

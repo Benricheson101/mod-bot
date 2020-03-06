@@ -1,9 +1,16 @@
-import { Client, ClientOptions, Collection, Guild, GuildMember, MessageEmbed, Snowflake, User } from "discord.js";
+import {
+	Client,
+	ClientOptions,
+	Collection,
+	MessageEmbed,
+	Snowflake,
+	User
+} from "discord.js";
 import { Database } from "./Database";
 import { Logger } from "verborum/dist";
 import { Config } from "verborum/dist/utils/interfaces";
 import Infraction from "./Infraction";
-import * as Sentry from "@sentry/node"
+import * as Sentry from "@sentry/node";
 
 /**
  * Discord.js client with a few other fancy things
@@ -20,7 +27,10 @@ export default class extends Client {
 		super(options);
 		this.db = new Database(options.databaseOps);
 		this.infractions = new Infraction(this);
-		if (options.sentry && options.sentry.enabled) Sentry.init(options.sentry.sentryOps)
+		if (options.sentry && options.sentry.enabled) {
+			this.log.debug("Using Sentry");
+			Sentry.init(options.sentry.sentryOps);
+		}
 	}
 
 	/**
