@@ -2,7 +2,6 @@ import {
 	connect,
 	Collection,
 	UpdateOneOptions,
-	FindAndModifyWriteOpResultObject,
 	UpdateWriteOpResult,
 	InsertOneWriteOpResult, CollectionInsertOneOptions
 } from "mongodb";

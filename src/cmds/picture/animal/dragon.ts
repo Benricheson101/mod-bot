@@ -14,7 +14,10 @@ export = {
 	async run (client, message) {
 		let { posts: data } = await new Request()
 			.betterE6("/search?term=dragon+solo+feral+-young+-diaper+-overweight-traditional_media_(artwork)+-pregnant+rating:s+order:random&page=0&page_size=1&nsfw=false");
-		if (!data) return message.channel.send(errors.generic);
+		if (!data) {
+			client.log.debug("[dragon] The request did not return any post data.")
+			return message.channel.send(errors.generic);
+		}
 		let md5 = data[0].md5;
 
 		await message.channel.send({

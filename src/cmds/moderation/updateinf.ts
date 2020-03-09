@@ -18,7 +18,7 @@ export = {
 	},
 
 	//todo: finish
-	async run (client, message, args) {
+	async run (client, message, args) {/*
 		if (!args.length || !(/^\d+$/.test(args[0]))) return message.channel.send(await errors.genUsage(this, message));
 		let gInf: D.Infraction = (await message.guild.db)
 			.infractions
@@ -38,6 +38,6 @@ export = {
 		> Old Reason: ${oldInf.reason}
 		> New Reason: ${newInf.reason}`;
 		return await message.channel.send(msg.replace("	", ""));
-	}
+	*/}
 
 } as C.Command

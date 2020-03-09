@@ -45,7 +45,7 @@ export = async (client: Client, message: Message): Promise<Message> => {
 	}
 
 	// Command options
-	if (cmd.config.disabled) return message.channel.send(":lock: This command has been disabled.");
+	if (cmd.config.disabled || client.disabled.find((c) => c.config.name === command || c.config.aliases && c.config.aliases.includes(command))) return message.channel.send(":lock: This command has been disabled.");
 	if (!client.options.owners.includes(message.author.id)) {
 		if (cmd.config.channelType && message.channel.type !== cmd.config.channelType) return;
 		if (cmd.config.ownerOnly === true && !client.options.owners.includes(message.author.id)) return;

@@ -23,6 +23,8 @@ client.tracker
 
 
 client.commands = new Collection() as Collection<string, Command.Command>;
+client.cooldowns = new Collection();
+client.disabled = new Collection() as Collection<string, Command.Command>;
 (async () => {
 	let eventFiles = await fileLoader("build/events");
 	for await (let file of eventFiles) {

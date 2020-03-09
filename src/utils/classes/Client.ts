@@ -25,6 +25,10 @@ export default class extends Client {
 	infractions;
 	/** Stats tracker */
 	tracker;
+	/** Cooldowns */
+	cooldowns: Collection<string, number>;
+	/** Disabled commands */
+	disabled: Collection<string, any>;
 
 	constructor (options: ClientOptions) {
 		super(options);
