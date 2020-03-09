@@ -21,7 +21,7 @@ declare module "discord.js" {
 		/** Enable or disable the MongoDB database */
 		enableDb?: boolean;
 		/** MongoDB Options */
-		databaseOps?: Database.MongoConfig;
+		databases?: Database.MongoConfig[];
 		/** Default embed color */
 		defaultColor?: string;
 		/** The bot owners */
@@ -381,7 +381,7 @@ export class Request {
 	 * Make a request to https://blue.catbus.co.uk/
 	 * @param	{string} path - The endpoint to make a request to
 	 */
-	blue (path: string): Promise<any>;
+	betterE6 (path: string): Promise<any>;
 
 	/**
 	 * Make a request to the [NASA API](https://api.chewey-bot.top/)

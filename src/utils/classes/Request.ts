@@ -15,7 +15,7 @@ export default class implements Request {
 		return await this._makeRequest(baseUrl + path, ops);
 	}
 
-	async blue (path) {
+	async betterE6 (path) {
 		let baseUrl: string = "https://blue.catbus.co.uk/api";
 		return await this._makeRequest(baseUrl + path);
 	}
