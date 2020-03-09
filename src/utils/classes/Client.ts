@@ -11,6 +11,7 @@ import { Logger } from "verborum/dist";
 import { Config } from "verborum/dist/utils/interfaces";
 import Infraction from "./Infraction";
 import * as Sentry from "@sentry/node";
+import StatsTracker from "@classes/StatsTracker";
 
 /**
  * Discord.js client with a few other fancy things
@@ -22,11 +23,14 @@ export default class extends Client {
 	commands: Collection<string, any>;
 	/** The infractions class */
 	infractions;
+	/** Stats tracker */
+	tracker;
 
 	constructor (options: ClientOptions) {
 		super(options);
-		this.db = new Database(options.databaseOps);
+		this.db = new Database(options.databases[0]);
 		this.infractions = new Infraction(this);
+		this.tracker = new StatsTracker(options.databases[1]);
 		if (options.sentry && options.sentry.enabled) {
 			this.log.debug("Using Sentry");
 			Sentry.init(options.sentry.sentryOps);

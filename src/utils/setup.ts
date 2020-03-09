@@ -1,6 +1,7 @@
 import { ClientOptions, Message, PermissionString, Snowflake } from "discord.js";
-import { Database as D, Command as C } from "@types";
+import { Database as D, Command as C, Database } from "@types";
 import { sentryDSN } from "@utils/sensitive";
+import MongoConfig = Database.MongoConfig;
 
 export const admins = [
 	"255834596766253057"
@@ -72,7 +73,7 @@ export const clientOptions: ClientOptions = {
 			debug: "steelblue"
 		}
 	},
-	databaseOps: {
+	databases: [{
 		url: process.env.MONGO,
 		name: "mod-bot",
 		mongoOptions: {
@@ -80,6 +81,15 @@ export const clientOptions: ClientOptions = {
 			useUnifiedTopology: true
 		}
 	},
+		{
+			name: "stats",
+			url: "mongodb://localhost/stats",
+			mongoOptions: {
+				useNewUrlParser: true,
+				useUnifiedTopology: true
+			}
+		}
+	],
 	sentry: {
 		enabled: process.env.NODE_ENV === "production",
 		sentryOps: {

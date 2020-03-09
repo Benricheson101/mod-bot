@@ -1,20 +1,26 @@
 import Client from "@classes/Client";
 import { Collection } from "discord.js";
-import { Command, Events } from "@types";
-import { resolve, basename } from "path";
+import { Command } from "@types";
+import { basename } from "path";
 import { clientOptions } from "@utils/setup";
 import "@utils/StructureExtensions";
-import { fileLoader } from "@utils/Utils";
+import { fileLoader, formatError } from "@utils/Utils";
+import StatsTracker from "@classes/StatsTracker";
 
 const client: Client = new Client(clientOptions);
 
 client
 	.db
 	.connect()
-	.then(() => client.log.debug("Connected to the database."))
-	.catch((err: Error) => {
-		client.log.error(err.stack);
-	});
+	.then(() => client.log.debug("Connected to the settings database."))
+	.catch(console.error);
+
+//todo: log commands, errors, events
+client.tracker
+	.connect()
+	.then(() => client.log.debug("Connected to the stats database"))
+	.catch(console.error);
+
 
 client.commands = new Collection() as Collection<string, Command.Command>;
 (async () => {
@@ -39,8 +45,13 @@ client.commands = new Collection() as Collection<string, Command.Command>;
 
 })();
 
+process.on("unhandledRejection", async (reason) => {
+	let e: Error = reason as Error;
+	let t = formatError(e);
+	await client.tracker.insert("error", t).catch(console.error)
+});
+
 client.login(process.env.TOKEN)
 	.catch((err: Error) => {
 		client.log.error(err.stack);
 	});
-

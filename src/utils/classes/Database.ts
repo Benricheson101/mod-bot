@@ -1,4 +1,11 @@
-import { connect, Collection } from "mongodb";
+import {
+	connect,
+	Collection,
+	UpdateOneOptions,
+	FindAndModifyWriteOpResultObject,
+	UpdateWriteOpResult,
+	InsertOneWriteOpResult, CollectionInsertOneOptions
+} from "mongodb";
 import { Database as D } from "@types";
 
 export class Database {
@@ -35,5 +42,17 @@ export class Database {
 	 */
 	get users (): Collection {
 		return this.db.collection("users");
+	}
+
+	async insert (collection: string, data: any, options?: CollectionInsertOneOptions): Promise<InsertOneWriteOpResult<any>> {
+		return this.db.collection(collection).insertOne(data, options);
+	}
+
+	async update (collection: string, query: any, data: any, options?: UpdateOneOptions): Promise<UpdateWriteOpResult> {
+		return this.db.collection(collection).updateOne(query, data, options);
+	}
+
+	async findOne (collection: string, query: any) {
+		return this.db.collection(collection).findOne(query);
 	}
 }

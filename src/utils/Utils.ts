@@ -32,7 +32,7 @@ export async function confirmation (message, confirmationMsg, { time = 300000, t
 	});
 }
 
-export async function* fileLoader (dir) {
+async function* fileLoader (dir) {
 	const files = await promises.readdir(dir, { withFileTypes: true });
 	for (let file of files) {
 		const res: PathLike = resolve(dir, file.name);
@@ -43,3 +43,16 @@ export async function* fileLoader (dir) {
 		}
 	}
 }
+
+function formatError ({ message, stack, name}: Error) {
+	return {
+		name,
+		message,
+		stack
+	}
+}
+
+ export {
+	fileLoader,
+	 formatError
+ }
