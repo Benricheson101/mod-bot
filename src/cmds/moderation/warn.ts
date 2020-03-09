@@ -15,8 +15,8 @@ export = {
 	},
 
 	async run (client, message, args) {
-		let member: GuildMember = message.mentions.members.first()
-			|| message.guild.members.find((m: GuildMember) => m.id === args[0]);
+		let member: GuildMember = await message.guild.getMember(args[0])
+			|| message.emntions.members.first();
 		if (!member) return message.channel.send(`:x: I could not find that user.`);
 
 		if (message.author.id === member.id) return message.channel.send(":x: You can't warn yourself.");
