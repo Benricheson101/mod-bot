@@ -3,7 +3,11 @@ import {
 	Collection,
 	UpdateOneOptions,
 	UpdateWriteOpResult,
-	InsertOneWriteOpResult, CollectionInsertOneOptions
+	InsertOneWriteOpResult,
+	CollectionInsertOneOptions,
+	DeleteWriteOpResultObject,
+	ReplaceOneOptions,
+	ReplaceWriteOpResult, SessionOptions, ClientSession
 } from "mongodb";
 import { Database as D } from "@types";
 
@@ -12,6 +16,8 @@ export class Database {
 
 	constructor (private config: D.MongoConfig) {
 	}
+
+	//Database Methods
 
 	/**
 	 * Connect to the database
@@ -24,6 +30,87 @@ export class Database {
 			});
 		this.db = mongo.db(this.config.name);
 	}
+
+	/**
+	 * Insert a document
+	 * @param {string} collection
+	 * @param data
+	 * @param {CollectionInsertOneOptions} options
+	 * @returns {Promise<InsertOneWriteOpResult<any>>}
+	 */
+	async insert (collection: CollectionName, data: any, options?: CollectionInsertOneOptions): Promise<InsertOneWriteOpResult<any>> {
+		return this.db.collection(collection).insertOne(data, options);
+	}
+
+	/**
+	 * Update a document
+	 * @param {string} collection
+	 * @param query
+	 * @param data
+	 * @param {UpdateOneOptions} options
+	 * @returns {Promise<UpdateWriteOpResult>}
+	 */
+	async update (collection: CollectionName, query: any, data: any, options?: UpdateOneOptions): Promise<UpdateWriteOpResult> {
+		return this.db.collection(collection).updateOne(query, { $set: data }, options);
+	}
+
+	/**
+	 * Update a document *Note: must include operators!*
+	 * @param {CollectionName} collection
+	 * @param query
+	 * @param data
+	 * @param {UpdateOneOptions} options
+	 * @returns {Promise<UpdateWriteOpResult>}
+	 * @example
+	 * updateRaw("guilds", { id: "1234" }, { $set: { prefix: "!!" } })
+	 */
+	async updateRaw (collection: CollectionName, query: any, data: any, options?: UpdateOneOptions) {
+		return this.db.collection(collection).updateOne(query, data, options);
+	}
+
+	/**
+	 * Replace a document
+	 * @param {string} collection
+	 * @param filter
+	 * @param data
+	 * @param {ReplaceOneOptions} options
+	 * @returns {Promise<ReplaceWriteOpResult>}
+	 */
+	async replace (collection: CollectionName, filter: any, data: any, options?: ReplaceOneOptions): Promise<ReplaceWriteOpResult> {
+		return this.db.collection(collection).replaceOne(filter, data, options);
+	}
+
+	/**
+	 * Delete a document
+	 * @param {string} collection
+	 * @param query
+	 * @returns {Promise<DeleteWriteOpResultObject>}
+	 */
+	async delete (collection: CollectionName, query: any): Promise<DeleteWriteOpResultObject> {
+		return this.db.collection(collection).deleteOne(query);
+	}
+
+	/**
+	 * Drop a collection
+	 * @param {CollectionName} collection
+	 * @param {ClientSession} options
+	 * @returns {Promise<boolean>}
+	 */
+	async drop (collection: CollectionName, options?: ClientSession): Promise<boolean> {
+		return this.db.collection(collection).drop((options as any));
+	}
+
+	/**
+	 * Find a document
+	 * @param {string} collection
+	 * @param query
+	 * @returns {Promise<any | null>}
+	 */
+	async find (collection: CollectionName, query: any) {
+		return this.db.collection(collection).findOne(query);
+	}
+
+	// Discord.js specific methods
 
 	/**
 	 * Get the saved guilds
@@ -42,16 +129,6 @@ export class Database {
 	get users (): Collection {
 		return this.db.collection("users");
 	}
-
-	async insert (collection: string, data: any, options?: CollectionInsertOneOptions): Promise<InsertOneWriteOpResult<any>> {
-		return this.db.collection(collection).insertOne(data, options);
-	}
-
-	async update (collection: string, query: any, data: any, options?: UpdateOneOptions): Promise<UpdateWriteOpResult> {
-		return this.db.collection(collection).updateOne(query, data, options);
-	}
-
-	async findOne (collection: string, query: any) {
-		return this.db.collection(collection).findOne(query);
-	}
 }
+
+type CollectionName = "users" | "guilds" | string;

@@ -27,7 +27,7 @@ export = {
 				text = text.substring(0, 1000);
 				return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
 			}
-			return text
+			return text;
 		}
 
 		try {

@@ -11,7 +11,7 @@ export default class implements Infraction.Infraction {
 		let guildDb = await this._client.db.guilds.findOne({ id: guild.id });
 		let infId = guildDb.infId += 1;
 		inf.id = infId;
-		await this._client.db.guilds.updateOne({ id: guild.id }, {
+		await this._client.db.updateRaw("guilds",{ id: guild.id }, {
 			$push: { infractions: inf },
 			$set: { infId: infId }
 		});
@@ -23,7 +23,7 @@ export default class implements Infraction.Infraction {
 
 	async getGuild (guild, infId?) {
 		if (infId) {
-			let { infractions } = await this._client.db.guilds.findOne({
+			let { infractions } = await this._client.db.find("guilds",{
 				id: guild
 			});
 			return infractions.find((inf: D.Infraction) => inf.id === +infId);
@@ -43,7 +43,7 @@ export default class implements Infraction.Infraction {
 		let inf: Promise<D.Infraction> = await this.getGuild(guild.id, infraction);
 		if (!inf) return;
 		let user = await this._client.getUser((await inf).user);
-		let result: UpdateWriteOpResult = await this._client.db.guilds.updateOne({
+		let result: UpdateWriteOpResult = await this._client.db.updateRaw("guilds",{
 			id: guild.id,
 			"infractions.id": +infraction
 		}, {

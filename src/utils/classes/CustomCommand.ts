@@ -6,10 +6,10 @@ export default class implements CC.CustomCommand {
 	}
 
 	async create (guild, command) {
-		let guildDb: D.GuildDB = await this._client.db.guilds.findOne({ id: guild });
+		let guildDb: D.GuildDB = await this._client.db.find("guilds", { id: guild });
 		let CCID = guildDb.CCID += 1;
 		command.id = CCID;
-		await this._client.db.guilds.updateOne({ id: guild }, {
+		await this._client.db.updateRaw("guilds", { id: guild }, {
 			$push: { commands: command },
 			$set: { CCID: CCID }
 		});
@@ -20,7 +20,7 @@ export default class implements CC.CustomCommand {
 		let guildCCs: D.CustomCommand[] = await this.getGuild(guild);
 		let found = guildCCs.find((c) => c.name === command || c.id === +command);
 		if (!found) return;
-		let result = await this._client.db.guilds.updateOne({ id: guild }, {
+		let result = await this._client.db.updateRaw("guilds", { id: guild }, {
 			$pull: { commands: found }
 		});
 		return {
@@ -31,13 +31,13 @@ export default class implements CC.CustomCommand {
 
 	async getGuild (guild, CCID?) {
 		if (CCID) {
-			let { commands } = await this._client.db.guilds.findOne({
+			let { commands } = await this._client.db.find("guilds", {
 				id: guild
 			});
 			return commands.find((inf) => inf.id === +CCID);
 		}
 		if (!CCID) {
-			let { commands }: D.GuildDB = await this._client.db.guilds.findOne({ id: guild });
+			let { commands }: D.GuildDB = await this._client.db.find("guilds", { id: guild });
 			return commands;
 		}
 	}

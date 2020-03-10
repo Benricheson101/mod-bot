@@ -6,7 +6,8 @@ export = {
 		ownerOnly: true,
 		help: {
 			description: "Allows the bot owner to disable a command",
-			category: "admin"
+			category: "admin",
+			hidden: true
 		}
 	},
 	async run (client, message, args) {
@@ -16,7 +17,7 @@ export = {
 		if (!cmd) return message.channel.send(":x: I could not find that command");
 
 		client.disabled.set(cmd.config.name, cmd);
-		return message.channel.send(`:white_check_mark: Ok, ${cmd.config.name} is now disabled.`);
+		return message.channel.send(`:white_check_mark: Ok, \`${cmd.config.name}\` is now disabled.`);
 
 	}
 } as C.Command

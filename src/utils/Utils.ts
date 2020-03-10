@@ -4,7 +4,7 @@ import { resolve } from "path";
 
 
 // todo: does not work
-export async function confirmation (message, confirmationMsg, { time = 300000, timeEndAction = "deny" }) {
+async function confirmation (message, confirmationMsg, { time = 300000, timeEndAction = "deny" }) {
 	const emojis = {
 		accept: "✅", // :white_check_mark:
 		deny: "❌" // :x:
@@ -44,15 +44,27 @@ async function* fileLoader (dir) {
 	}
 }
 
-function formatError ({ message, stack, name}: Error) {
+function formatError ({ message/*, stack*/, name }: Error) {
 	return {
 		name,
-		message,
-		stack
-	}
+		message
+		//stack
+	};
 }
 
- export {
+
+function getMethods (obj: any) {
+	let properties = new Set(),
+		currentObj = obj;
+	do {
+		Object.getOwnPropertyNames(currentObj).map(item => properties.add(item));
+	} while ((currentObj = Object.getPrototypeOf(currentObj)));
+	return [...properties.keys()].filter((item: any) => typeof obj[item] === "function");
+}
+
+
+export {
 	fileLoader,
-	 formatError
- }
+	formatError,
+	getMethods
+};
