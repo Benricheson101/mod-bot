@@ -28,6 +28,13 @@ export = {
 		let commit: string = (await exec("git rev-parse HEAD")).stdout;
 		let commitDate: Date = new Date((await exec("echo $(git log -1 --pretty=format:'%ad')")).stdout);
 
+		let commandsUsed24h: number = await client.stats.count("command", {
+			date: {
+				$gte: new Date(Date.now() - 8.64E7)
+			}
+		});
+
+
 		let devs: User[] = [];
 		for (let u of admins) {
 			let user: User | null = await client.getUser(u);
@@ -51,6 +58,8 @@ export = {
 		**Guilds**: ${client.guilds.cache.size}
 		**Users**: ${client.users.cache.size}
 		**Channels**: ${client.channels.cache.size}
+		**Commands Used (Last 24h)**: ${commandsUsed24h}
+		**Errors (Since Last Restart)**: ${await client.stats.count("error")}
 		`;
 		//todo: memory
 		let technicalInfo: string = `

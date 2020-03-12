@@ -7,7 +7,8 @@ import {
 	CollectionInsertOneOptions,
 	DeleteWriteOpResultObject,
 	ReplaceOneOptions,
-	ReplaceWriteOpResult, SessionOptions, ClientSession
+	ReplaceWriteOpResult,
+	ClientSession, MongoCountPreferences
 } from "mongodb";
 import { Database as D } from "@types";
 
@@ -16,8 +17,6 @@ export class Database {
 
 	constructor (private config: D.MongoConfig) {
 	}
-
-	//Database Methods
 
 	/**
 	 * Connect to the database
@@ -30,6 +29,8 @@ export class Database {
 			});
 		this.db = mongo.db(this.config.name);
 	}
+
+	//todo: Pull operator?
 
 	/**
 	 * Insert a document
@@ -64,7 +65,7 @@ export class Database {
 	 * @example
 	 * updateRaw("guilds", { id: "1234" }, { $set: { prefix: "!!" } })
 	 */
-	async updateRaw (collection: CollectionName, query: any, data: any, options?: UpdateOneOptions) {
+	async updateRaw (collection: CollectionName, query: any, data: any, options?: UpdateOneOptions): Promise<UpdateWriteOpResult> {
 		return this.db.collection(collection).updateOne(query, data, options);
 	}
 
@@ -106,8 +107,23 @@ export class Database {
 	 * @param query
 	 * @returns {Promise<any | null>}
 	 */
-	async find (collection: CollectionName, query: any) {
+	async find (collection: CollectionName, query: any): Promise<any | null> {
 		return this.db.collection(collection).findOne(query);
+	}
+
+	/**
+	 * Count the number of documents in a collection
+	 * @param collection
+	 * @param query
+	 * @param options
+	 * @returns {Promise<number>}
+	 */
+	async count (collection: CollectionName, query?: any, options?: MongoCountPreferences): Promise<number> {
+		return this.db.collection(collection).countDocuments(query, options);
+	}
+
+	async findMany (collection: CollectionName, query: any): Promise<any[]> {
+		return this.db.collection(collection).find(query).toArray();
 	}
 
 	// Discord.js specific methods

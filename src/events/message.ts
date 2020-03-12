@@ -12,13 +12,13 @@ export = async (client: Client, message: Message): Promise<Message> => {
 
 //todo: commands in DMs
 	if (message.channel.type === "text") {
-		guild = await client.db.guilds.findOne({
+		guild = await client.db.find("guilds", {
 			id: message.guild.id
 		} as D.GuildDB);
 
 		if (!guild) {
 			guild = defaultGuild(message.guild.id);
-			await client.db.guilds.insertOne(guild);
+			await client.db.insert("guilds", guild);
 		}
 	}
 
@@ -78,6 +78,9 @@ export = async (client: Client, message: Message): Promise<Message> => {
 		});
 
 	let endTime: Date = new Date();
+	let executionTime: number = Number(endTime) - Number(startTime);
 
-	client.log.debug(`[${cmd.config.name}] Command execution took ${Number(endTime) - Number(startTime)}ms`);
+	client.log.debug(`[${cmd.config.name}] Command execution took ${executionTime}ms`);
+
+	await client.stats.runCommand(message, cmd, executionTime);
 }

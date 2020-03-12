@@ -24,7 +24,7 @@ export default class extends Client {
 	/** The infractions class */
 	infractions;
 	/** Stats tracker */
-	tracker;
+	stats;
 	/** Cooldowns */
 	cooldowns: Collection<string, number>;
 	/** Disabled commands */
@@ -34,7 +34,7 @@ export default class extends Client {
 		super(options);
 		this.db = new Database(options.databases[0]);
 		this.infractions = new Infraction(this);
-		this.tracker = new StatsTracker(options.databases[1]);
+		this.stats = new StatsTracker(options.databases[1]);
 		if (options.sentry && options.sentry.enabled) {
 			this.log.debug("Using Sentry");
 			Sentry.init(options.sentry.sentryOps);

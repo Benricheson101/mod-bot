@@ -16,7 +16,7 @@ client
 	.catch(console.error);
 
 //todo: log commands, errors, events
-client.tracker
+client.stats
 	.connect()
 	.then(() => client.log.debug("Connected to the stats database"))
 	.catch(console.error);
@@ -49,11 +49,16 @@ client.disabled = new Collection() as Collection<string, Command.Command>;
 
 process.on("unhandledRejection", async (reason) => {
 	let e: Error = reason as Error;
-	let t = formatError(e);
-	await client.tracker.insert("error", t).catch(console.error)
+	console.error(await e);
+	await client.stats.error(e);
+});
+
+client.once("ready", () => {
+	client.stats.drop("error")
+		.then(() => console.log("Cleared the error database."));
 });
 
 client.login(process.env.TOKEN)
 	.catch((err: Error) => {
-		client.log.error(err.stack);
+		client.log.error("eror!", err.stack);
 	});

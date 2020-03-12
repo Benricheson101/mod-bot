@@ -44,11 +44,10 @@ async function* fileLoader (dir) {
 	}
 }
 
-function formatError ({ message/*, stack*/, name }: Error) {
+function formatError ({ message, name }: Error) {
 	return {
 		name,
 		message
-		//stack
 	};
 }
 
