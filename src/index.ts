@@ -54,8 +54,10 @@ process.on("unhandledRejection", async (reason) => {
 });
 
 client.once("ready", () => {
-	client.stats.drop("error")
-		.then(() => client.log.debug("[D] Cleared the error database."));
+	if (client.stats.db.collection("error")) {
+		client.stats.drop("error")
+			.then(() => client.log.debug("[D] Cleared the error database."));
+	}
 });
 
 client.login(process.env.TOKEN)
