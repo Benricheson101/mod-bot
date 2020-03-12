@@ -12,13 +12,13 @@ const client: Client = new Client(clientOptions);
 client
 	.db
 	.connect()
-	.then(() => client.log.debug("Connected to the settings database."))
+	.then(() => client.log.debug("[D] Connected to the settings database."))
 	.catch(console.error);
 
 //todo: log commands, errors, events
 client.stats
 	.connect()
-	.then(() => client.log.debug("Connected to the stats database"))
+	.then(() => client.log.debug("[D] Connected to the stats database"))
 	.catch(console.error);
 
 
