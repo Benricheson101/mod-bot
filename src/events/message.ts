@@ -62,9 +62,9 @@ export = async (client: Client, message: Message): Promise<Message> => {
 	let startTime: Date = new Date();
 
 	cmd.run(client, message, args)
-		.catch((err: Error) => {
+		.catch(async (err: Error) => {
 			if (client.options.owners.includes(message.author.id)) {
-				message.channel.send({
+				await message.channel.send({
 					embed: client.defaultEmbed
 						.setAuthor("I broke")
 						.setTitle(err.name.substring(0, 256))
@@ -73,8 +73,9 @@ export = async (client: Client, message: Message): Promise<Message> => {
 						.setTimestamp()
 				});
 				client.log.error(`[Error] Error running command: ${cmd.config.name} | ${err.message}`);
+				await client.stats.error(err);
 				throw err;
-			} else message.channel.send(errors.generic);
+			} else await message.channel.send(errors.generic);
 		});
 
 	let endTime: Date = new Date();
