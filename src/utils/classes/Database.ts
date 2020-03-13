@@ -8,12 +8,13 @@ import {
 	DeleteWriteOpResultObject,
 	ReplaceOneOptions,
 	ReplaceWriteOpResult,
-	ClientSession, MongoCountPreferences
+	ClientSession,
+	MongoCountPreferences, Db
 } from "mongodb";
 import { Database as D } from "@types";
 
 export class Database {
-	db;
+	db?: Db;
 
 	constructor (private config: D.MongoConfig) {
 	}
@@ -122,6 +123,12 @@ export class Database {
 		return this.db.collection(collection).countDocuments(query, options);
 	}
 
+	/**
+	 * Find many matching documents
+	 * @param {CollectionName} collection
+	 * @param query
+	 * @returns {Promise<any[]>}
+	 */
 	async findMany (collection: CollectionName, query: any): Promise<any[]> {
 		return this.db.collection(collection).find(query).toArray();
 	}

@@ -119,6 +119,7 @@ declare namespace Command {
 				| "custom-commands"
 				| "fun"
 				| "poll"
+				| "support"
 				| string;
 		}
 	}

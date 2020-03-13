@@ -2,9 +2,9 @@ import Client from "@classes/Client";
 import { Collection } from "discord.js";
 import { Command } from "@types";
 import { basename } from "path";
-import { clientOptions } from "@utils/setup";
+import { clientOptions, errors } from "@utils/setup";
 import "@utils/StructureExtensions";
-import { fileLoader, formatError } from "@utils/Utils";
+import { fileLoader, formatError, getMethods } from "@utils/Utils";
 import StatsTracker from "@classes/StatsTracker";
 
 const client: Client = new Client(clientOptions);
@@ -51,13 +51,6 @@ process.on("unhandledRejection", async (reason) => {
 	let e: Error = reason as Error;
 	console.error(await e);
 	await client.stats.error(e);
-});
-
-client.once("ready", () => {
-	if (client.stats.db.collection("error")) {
-		client.stats.drop("error")
-			.then(() => client.log.debug("[D] Cleared the error database."));
-	}
 });
 
 client.login(process.env.TOKEN)

@@ -26,6 +26,6 @@ export default class extends Database {
 	}
 
 	async error (error: Error) {
-		await super.insert("error", { ...formatError(error), ...{ date: new Date() } });
+		await super.insert("errors", { ...formatError(error), ...{ date: new Date() } });
 	}
 }

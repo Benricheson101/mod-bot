@@ -85,8 +85,7 @@ export = {
 		for (let role of roles) {
 			if ((roleList.join("\n").length + role.toString().length) < 965) roleList.push(role);
 			else {
-				// @ts-ignore
-				roleList.push(`${roles.length - roleList.length} roles have been omitted due to embed character limits`);
+				(roleList as unknown[]).push(`${roles.length - roleList.length} roles have been omitted due to embed character limits`);
 				break;
 			}
 		}
@@ -97,7 +96,7 @@ export = {
 			.addField("Presences", presenceInfo.replace(/\t+/g, ""))
 			.addField("Channels", channelInfo.replace(/\t+/g, ""))
 			.addField("Other", otherInfo.replace(/\t+/g, ""))
-			.addField(`Roles (${roles.length})`, roleList.join("\n"))
+			.addField(`Roles (${g.roles.cache.size})`, roleList.join("\n"))
 			.setThumbnail(g.iconURL({ format: "png", dynamic: true }))
 			.setFooter(`ID: ${g.id}`)
 			.setTimestamp();

@@ -1,6 +1,7 @@
 import { Command as C, Database as D } from "@types";
 import { GuildMember, MessageEmbed, User } from "discord.js";
 import * as moment from "moment";
+import { colors, defaults } from "@utils/setup";
 
 export = {
 	config: {
@@ -21,6 +22,10 @@ export = {
 		}
 		if (!user) return message.channel.send(":x: I could not find that user");
 
+		let randomInfo: string = `
+		**Commands Used**: ${await client.stats.commandCount({ user: user.id }) ?? 0}
+		**Shared Servers**: ${client.guilds.cache.filter((g) => g.members.cache.has(user.id)).size ?? 0}
+		`;
 
 		let userInfo: string = `**User**: ${user.tag}
 		**ID**: ${user.id}
@@ -34,8 +39,10 @@ export = {
 			: "**Presence**: None"}`;
 
 		let embed: MessageEmbed = client.defaultEmbed
-			.setThumbnail(user.displayAvatarURL({ format: "png", dynamic: true }));
-		embed.addField("User", userInfo.replace(/	/g, ""));
+			.setThumbnail(user.displayAvatarURL({ format: "png", dynamic: true }))
+			.addField("User", userInfo.replace(/	/g, ""))
+			.addField("User/Bot Stats", randomInfo.replace(/	/g, ""));
+
 
 		let GM: GuildMember = message.guild.members.cache.find((m: GuildMember) => m.id === user.id);
 		if (GM) {
@@ -50,11 +57,10 @@ export = {
 			**Total Roles**: ${GM.roles.cache.size}
 			**Nickname**: ${GM.nickname ?? "None"}`;
 
-			embed.addField(
-				"GuildMember",
-				GMInfo.replace(/	/g, ""),
-				true)
-				.addField("Roles", roles);
+			embed.addField("GuildMember", GMInfo.replace(/	/g, ""))
+				.addField(`Roles (${GM.roles.cache.size})`, roles);
+
+			if (GM.roles.cache.size > 0) embed.setColor(roles.find((r) => r.color && r.color !== 0)?.color ?? colors.default);
 		}
 		await message.channel.send({ embed: embed });
 	}
