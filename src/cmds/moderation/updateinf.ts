@@ -2,23 +2,23 @@ import { Command as C, Database as D } from "@types";
 import { errors } from "@utils/setup";
 
 export = {
-	config: {
-		name: "updateinf",
-		aliases: ["reason", "changereason", "update-inf"],
-		role: "moderator",
-		channelType: "text",
-		disabled: true,
-		help: {
-			description: "Change the reason for an infraction",
-			usage: "<infId> [reason]",
-			example: "1 The user was spamming after being told to stop",
-			category: "moderation",
-			hidden: true
-		}
-	},
+  config: {
+    name: "updateinf",
+    aliases: [ "reason", "changereason", "update-inf" ],
+    role: "moderator",
+    channelType: "text",
+    disabled: true,
+    help: {
+      description: "Change the reason for an infraction",
+      usage: "<infId> [reason]",
+      example: "1 The user was spamming after being told to stop",
+      category: "moderation",
+      hidden: true
+    }
+  },
 
-	//todo: finish
-	async run (client, message, args) {/*
+  //todo: finish
+  async run (client, message, args) {/*
 		if (!args.length || !(/^\d+$/.test(args[0]))) return message.channel.send(await errors.genUsage(this, message));
 		let gInf: D.Infraction = (await message.guild.db)
 			.infractions
@@ -38,6 +38,7 @@ export = {
 		> Old Reason: ${oldInf.reason}
 		> New Reason: ${newInf.reason}`;
 		return await message.channel.send(msg.replace("	", ""));
-	*/}
+	*/
+  }
 
 } as C.Command
