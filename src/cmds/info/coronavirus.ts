@@ -16,7 +16,8 @@ export = {
 
   async run(client, message, args) {
     const path = args[0] ? "/countries" : "/all";
-    let data = await new Request().covid19(path);
+    let data = await new Request()
+    .covid19(path);
 
     if (args[0]) {
       const country = args.join(" ").toLowerCase();
@@ -24,9 +25,7 @@ export = {
     }
 
     if (!data || Object.keys(data).length < 1)
-      return message.channel.send(
-        ":x: An error occurred. Please make sure the country code you included is valid."
-      );
+      return message.channel.send(":x: An error occurred. Please make sure the country code you included is valid.");
 
     await message.channel.send(generateEmbed(data));
 
@@ -34,17 +33,13 @@ export = {
       let body: string[] = [];
 
       for (let key in requestData) {
-        body.push(`**${capitalize(key)}**: ${requestData[key]}`);
+        body.push(`**${capitalize(key)}**: ${/^[0-9]*$/.test(requestData[key]) ? parseFloat(requestData[key]).toLocaleString("en") : requestData[key].replace(/\n/g, "")}`);
       }
 
       return client.defaultEmbed
-        .setTitle(
-          `COVID-19 Info ${
-            requestData.country ? "for " + requestData.country : "Worldwide"
-          }`
-        )
+        .setTitle(`COVID-19 Info ${requestData.country ? "for " + requestData.country : "Worldwide"}`)
         .setURL("https://github.com/javieraviles/covidAPI")
         .setDescription(body.join("\n"));
     }
   }
-};
+} as C.Command;
